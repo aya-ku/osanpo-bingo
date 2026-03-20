@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>お散歩ビンゴ 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#3da55e;--green-l:#b8e8c8;--green-d:#1e6e3a;
+  --yellow:#ffd740;--orange:#ff7043;--blue:#42a5f5;--blue-l:#e3f2fd;
+  --pink:#e91e8c;--pink-l:#fce4ec;
+  --shadow:rgba(30,80,50,0.13);
+}
+body{font-family:'Nunito',sans-serif;background:#e8f5ec;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 40% at 15% 5%,#c6e8f8 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 90%,#c8f0d4 0%,transparent 55%),
+    radial-gradient(ellipse 50% 35% at 70% 20%,#fff9c4 0%,transparent 50%)}
+.leaf{position:fixed;font-size:1.4rem;opacity:.18;pointer-events:none;z-index:0;animation:floatLeaf linear infinite}
+.leaf:nth-child(1){top:8%;left:5%;animation-duration:18s}
+.leaf:nth-child(2){top:20%;right:4%;animation-duration:22s;animation-delay:-4s}
+.leaf:nth-child(3){top:55%;left:2%;animation-duration:25s;animation-delay:-10s}
+.leaf:nth-child(4){top:75%;right:6%;animation-duration:20s;animation-delay:-7s}
+@keyframes floatLeaf{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(15deg)}}
+.container{position:relative;z-index:1;max-width:500px;margin:0 auto;padding:12px 14px 40px}
+.screen{display:none}.screen.active{display:block}
+
+/* HEADER */
+.header{text-align:center;padding:16px 0 10px}
+.header h1{font-family:'Mochiy Pop One',sans-serif;font-size:1.9rem;color:var(--green-d);text-shadow:3px 3px 0 rgba(61,165,94,.22);letter-spacing:.06em}
+.header .sub{font-size:.8rem;color:#4a7a5a;font-weight:700;margin-top:3px}
+.deco-row{font-size:1.2rem;margin:4px 0 2px;letter-spacing:5px}
+
+/* CARD */
+.card{background:white;border-radius:22px;padding:18px;box-shadow:0 6px 28px var(--shadow);margin-bottom:12px}
+.card h2{font-family:'Mochiy Pop One',sans-serif;font-size:.95rem;color:var(--green-d);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+
+/* TABS */
+.tab-row{display:flex;border:2px solid var(--green-l);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.tab-btn{flex:1;padding:9px 4px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.8rem;background:white;color:#999;border:none;cursor:pointer;transition:all .2s}
+.tab-btn.active{background:var(--green);color:white}
+
+/* MODE CARDS */
+.mode-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.mode-card{padding:12px 6px;border:2px solid #e8e8e8;border-radius:16px;background:white;cursor:pointer;text-align:center;transition:all .2s}
+.mode-card:hover,.mode-card.selected{border-color:var(--green);background:#f0faf4}
+.mode-card .mico{font-size:1.8rem;display:block;margin-bottom:4px}
+.mode-card .mlabel{font-size:.72rem;font-weight:800;color:#555}
+.mode-card.selected .mlabel{color:var(--green-d)}
+.mode-desc{font-size:.75rem;color:#888;font-weight:700;text-align:center;padding:4px 0 10px;line-height:1.5}
+
+/* PLAYERS */
+.players-row{display:flex;gap:8px;margin-bottom:12px}
+.player-field{flex:1;position:relative}
+.player-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:1rem}
+.player-input{width:100%;padding:10px 10px 10px 32px;border:2px solid #e0e0e0;border-radius:13px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;transition:border-color .2s}
+.player-input:focus{border-color:var(--green)}
+
+/* TEMPLATE */
+.template-list{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tpl-btn{padding:9px 10px;border:2px solid #e8e8e8;border-radius:13px;background:white;cursor:pointer;display:flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;color:#555;transition:all .15s}
+.tpl-btn:hover,.tpl-btn.selected{border-color:var(--green);background:#f0faf4;color:var(--green-d)}
+.tpl-btn .ticon{font-size:1.1rem}
+
+/* CUSTOM KW */
+.kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.kw-wrap{position:relative}
+.kw-num{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:17px;height:17px;border-radius:50%;background:var(--green-l);color:var(--green-d);font-size:.62rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.kw-input{width:100%;padding:8px 8px 8px 30px;border:2px solid #e0e0e0;border-radius:11px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;outline:none;transition:border-color .2s}
+.kw-input:focus{border-color:var(--green)}
+
+/* BUTTONS */
+.btn-start{width:100%;padding:15px;background:linear-gradient(135deg,#4bc77a 0%,var(--green-d) 100%);color:white;border:none;border-radius:18px;font-family:'Mochiy Pop One',sans-serif;font-size:1.05rem;letter-spacing:.06em;cursor:pointer;box-shadow:0 6px 22px rgba(61,165,94,.4);transition:all .2s}
+.btn-start:hover{transform:translateY(-2px)}
+.btn-sm{padding:10px 14px;border-radius:13px;border:2px solid #e0e0e0;background:white;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.8rem;color:#666;transition:all .2s}
+.btn-sm:hover{border-color:var(--green);color:var(--green-d);background:#f0faf4}
+.hint{font-size:.73rem;color:#9dbf9e;font-weight:700;text-align:center;padding:5px 0 2px}
+
+/* ── TURN BANNER ── */
+.turn-banner{border-radius:18px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 4px 16px var(--shadow)}
+.turn-banner.p1{background:linear-gradient(135deg,#e8f5e9,#c8e8d0);border:2px solid var(--green)}
+.turn-banner.p2{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2px solid var(--blue)}
+.turn-banner.coop{background:linear-gradient(135deg,#fff8e1,#ffecb3);border:2px solid var(--yellow)}
+.turn-info{flex:1}
+.turn-label{font-size:.7rem;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.05em}
+.turn-name{font-family:'Mochiy Pop One',sans-serif;font-size:1.1rem;color:var(--green-d)}
+.turn-banner.p2 .turn-name{color:#1565c0}
+.turn-banner.coop .turn-name{color:#e65100}
+.turn-score{text-align:right}
+.score-num{font-family:'Mochiy Pop One',sans-serif;font-size:1.4rem;color:var(--green-d)}
+.score-label{font-size:.65rem;font-weight:800;color:#999}
+
+/* SCOREBOARD (battle) */
+.scoreboard{display:flex;gap:8px;margin-bottom:10px}
+.score-card{flex:1;background:white;border-radius:16px;padding:10px;text-align:center;box-shadow:0 3px 12px var(--shadow);border:2px solid transparent;transition:all .2s}
+.score-card.active-p{border-color:var(--green);background:#f0faf4}
+.score-card.active-p.blue{border-color:var(--blue);background:var(--blue-l)}
+.score-card .sc-name{font-weight:800;font-size:.8rem;color:#666;margin-bottom:3px}
+.score-card .sc-lines{font-family:'Mochiy Pop One',sans-serif;font-size:1.6rem;color:var(--green-d)}
+.score-card.blue .sc-lines{color:#1565c0}
+.score-card .sc-label{font-size:.62rem;color:#aaa;font-weight:700}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:10px}
+.progress-label{font-size:.75rem;font-weight:700;color:#666;margin-bottom:4px;display:flex;justify-content:space-between}
+.progress-bar{height:7px;background:#e0e0e0;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),#82e0a0);border-radius:99px;transition:width .4s ease}
+
+/* BINGO GRID */
+.bingo-wrap{background:white;border-radius:22px;padding:11px;box-shadow:0 6px 28px var(--shadow);margin-bottom:12px}
+.bingo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cell{aspect-ratio:1;border-radius:12px;border:2px solid #e8e8e8;background:#fafafa;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .18s;position:relative;padding:3px;user-select:none;-webkit-tap-highlight-color:transparent}
+.cell:active{transform:scale(.94)}
+.cell.found{border-color:var(--green);background:linear-gradient(135deg,#e8f5e9,#c8e8d0)}
+.cell.found-p2{border-color:var(--blue);background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
+.cell.bingo-line{background:linear-gradient(135deg,#ffe082,#ffb74d);border-color:var(--orange)}
+.cell.free-cell{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-color:#90caf9;cursor:default}
+.cell-kw{font-size:clamp(.48rem,2.1vw,.73rem);font-weight:800;color:#444;text-align:center;line-height:1.2;word-break:break-all}
+.cell-photo{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block}
+.cell-check{position:absolute;top:2px;right:2px;width:15px;height:15px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:white}
+.cell-check.blue{background:var(--blue)}
+.cell-free-icon{font-size:1.3rem}
+.cell-free-txt{font-size:.48rem;font-weight:800;color:#64b5f6;margin-top:1px}
+.cell-owner{position:absolute;bottom:2px;left:2px;font-size:.45rem;font-weight:900;padding:1px 4px;border-radius:6px;color:white}
+.cell-owner.p1o{background:var(--green)}
+.cell-owner.p2o{background:var(--blue)}
+
+/* BOTTOM */
+.bottom-actions{display:flex;gap:8px}
+
+/* OVERLAYS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+
+/* PHOTO MODAL */
+.modal{background:white;border-radius:22px;padding:20px;width:100%;max-width:360px;box-shadow:0 24px 64px rgba(0,0,0,.3);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-family:'Mochiy Pop One',sans-serif;font-size:.95rem;color:var(--green-d);text-align:center;margin-bottom:10px}
+.modal-kw{background:var(--green-l);border-radius:12px;padding:10px;text-align:center;font-weight:800;font-size:1.1rem;color:#333;margin-bottom:12px}
+
+/* Camera UI */
+.cam-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.cam-btn{padding:14px 8px;border:2px solid #e0e0e0;border-radius:14px;background:white;cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;color:#555}
+.cam-btn:hover{border-color:var(--green);background:#f0faf4;color:var(--green-d)}
+.cam-btn .cico{font-size:1.8rem;display:block;margin-bottom:4px}
+.photo-preview{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;margin-bottom:12px;display:none}
+.modal-btns{display:flex;gap:8px}
+.modal-btn{flex:1;padding:11px;border-radius:13px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;border:none;transition:all .2s}
+.modal-btn.cancel{background:#f0f0f0;color:#888}
+.modal-btn.confirm{background:linear-gradient(135deg,#4bc77a,var(--green-d));color:white;box-shadow:0 4px 14px rgba(61,165,94,.35)}
+.modal-btn.confirm:disabled{opacity:.4;cursor:not-allowed}
+.modal-btn.remove{background:#fce4e4;color:#c62828}
+#camInput,.#libInput{display:none}
+
+/* PASS MODAL */
+.pass-modal{background:white;border-radius:24px;padding:28px 24px;width:100%;max-width:320px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.3);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275)}
+.pass-modal .pico{font-size:3rem;margin-bottom:10px}
+.pass-modal h2{font-family:'Mochiy Pop One',sans-serif;font-size:1.3rem;color:var(--green-d);margin-bottom:6px}
+.pass-modal .psub{font-size:.82rem;color:#888;font-weight:700;margin-bottom:20px}
+.pass-modal .pname{color:var(--blue);font-size:1.1rem}
+.btn-pass{width:100%;padding:14px;background:linear-gradient(135deg,#42a5f5,#1565c0);color:white;border:none;border-radius:16px;font-family:'Mochiy Pop One',sans-serif;font-size:1rem;cursor:pointer;box-shadow:0 5px 16px rgba(66,165,245,.4)}
+
+/* BINGO FLASH */
+.bingo-flash{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45)}
+.bingo-flash.show{display:flex}
+.bingo-popup{background:linear-gradient(135deg,#ffe57f,#ffb74d);border-radius:28px;padding:26px 40px;text-align:center;box-shadow:0 24px 64px rgba(255,140,66,.5);animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
+.bingo-popup h2{font-family:'Mochiy Pop One',sans-serif;font-size:2rem;color:white;text-shadow:3px 3px 0 rgba(0,0,0,.15)}
+.bingo-popup .bsub{color:rgba(255,255,255,.9);font-weight:700;font-size:.88rem;margin-top:5px}
+.bingo-popup .bdismiss{margin-top:14px;font-size:.75rem;color:rgba(255,255,255,.7);font-weight:600}
+
+/* WINNER */
+#winnerScreen{text-align:center;padding:36px 0}
+.trophy{font-size:5rem;animation:trophyBounce 1s infinite alternate}
+@keyframes trophyBounce{from{transform:scale(1) rotate(-5deg)}to{transform:scale(1.12) rotate(5deg)}}
+.winner-name{font-family:'Mochiy Pop One',sans-serif;font-size:1.9rem;color:var(--green-d);margin:12px 0 5px}
+.winner-sub{color:#888;font-weight:700;margin-bottom:8px}
+.win-badge{display:inline-block;background:var(--yellow);padding:5px 16px;border-radius:20px;font-weight:800;font-size:.88rem;color:#7a5000;margin-bottom:24px}
+.confetti-row{font-size:1.5rem;letter-spacing:7px;margin-bottom:24px}
+.winner-recap{background:white;border-radius:18px;padding:14px;box-shadow:0 4px 16px var(--shadow);margin-bottom:24px;text-align:left}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f0f0;font-weight:700;font-size:.85rem;color:#555}
+.recap-row:last-child{border-bottom:none}
+.recap-val{font-family:'Mochiy Pop One',sans-serif;font-size:1rem;color:var(--green-d)}
+</style>
+</head>
+<body>
+
+<div class="leaf">🍃</div><div class="leaf">🌿</div><div class="leaf">🍀</div><div class="leaf">🌱</div>
+
+<div class="container">
+
+  <div class="header">
+    <div class="deco-row">🌸🌿🦋🌻🐦</div>
+    <h1>お散歩ビンゴ</h1>
+    <div class="sub">見つけたら写真でゲット！</div>
+  </div>
+
+  <!-- ══ SETUP ══ -->
+  <div id="setupScreen" class="screen active">
+
+    <div class="card">
+      <h2>🎮 ゲームモード</h2>
+      <div class="mode-cards">
+        <div class="mode-card selected" onclick="setMode('solo',this)">
+          <span class="mico">🙋</span>
+          <span class="mlabel">ソロ</span>
+        </div>
+        <div class="mode-card" onclick="setMode('battle',this)">
+          <span class="mico">⚔️</span>
+          <span class="mlabel">対戦</span>
+        </div>
+        <div class="mode-card" onclick="setMode('coop',this)">
+          <span class="mico">🤝</span>
+          <span class="mlabel">協力</span>
+        </div>
+      </div>
+      <div class="mode-desc" id="modeDesc">自分のペースでお散歩ビンゴ！</div>
+
+      <div id="playerSetup">
+        <div class="players-row">
+          <div class="player-field">
+            <span class="player-icon">🟢</span>
+            <input class="player-input" id="p1name" placeholder="プレイヤー１" maxlength="8">
+          </div>
+          <div class="player-field" id="p2field" style="display:none">
+            <span class="player-icon">🔵</span>
+            <input class="player-input" id="p2name" placeholder="プレイヤー２" maxlength="8">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🏷️ マスのキーワード</h2>
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchKwTab('template',this)">📋 テンプレート</button>
+        <button class="tab-btn" onclick="switchKwTab('custom',this)">✏️ カスタム</button>
+      </div>
+      <div id="templatePane">
+        <div class="template-list">
+          <button class="tpl-btn selected" onclick="selectTpl(this,'park')"><span class="ticon">🌳</span>公園さんぽ</button>
+          <button class="tpl-btn" onclick="selectTpl(this,'town')"><span class="ticon">🏙️</span>まち探検</button>
+          <button class="tpl-btn" onclick="selectTpl(this,'nature')"><span class="ticon">🦋</span>しぜん観察</button>
+          <button class="tpl-btn" onclick="selectTpl(this,'seasons')"><span class="ticon">🌸</span>季節さがし</button>
+        </div>
+        <p style="margin-top:9px;font-size:.73rem;color:#bbb;font-weight:700;text-align:center">↑ テンプレートを選んでスタート！</p>
+      </div>
+      <div id="customPane" style="display:none">
+        <div class="kw-grid" id="kwGrid"></div>
+        <p style="font-size:.73rem;color:#bbb;font-weight:700;text-align:center">空白は自動補完されます</p>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startGame()">🚶 さんぽに出発！</button>
+    <p class="hint">タップしてゲームスタート 🌿</p>
+  </div>
+
+  <!-- ══ GAME ══ -->
+  <div id="gameScreen" class="screen">
+
+    <!-- Turn banner (solo / coop) -->
+    <div class="turn-banner p1" id="turnBanner" style="display:none">
+      <div class="turn-info">
+        <div class="turn-label" id="turnLabel">NOW PLAYING</div>
+        <div class="turn-name" id="turnName">プレイヤー１</div>
+      </div>
+      <div class="turn-score">
+        <div class="score-num" id="turnLineCount">0</div>
+        <div class="score-label">ライン</div>
+      </div>
+    </div>
+
+    <!-- Scoreboard (battle) -->
+    <div class="scoreboard" id="scoreboard" style="display:none">
+      <div class="score-card active-p" id="sc0">
+        <div class="sc-name" id="scn0">P1</div>
+        <div class="sc-lines" id="scl0">0</div>
+        <div class="sc-label">ライン</div>
+      </div>
+      <div style="display:flex;align-items:center;font-family:'Mochiy Pop One',sans-serif;font-size:1.2rem;color:#bbb">VS</div>
+      <div class="score-card blue" id="sc1">
+        <div class="sc-name" id="scn1">P2</div>
+        <div class="sc-lines" id="scl1">0</div>
+        <div class="sc-label">ライン</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="progressTxt">進捗</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="bingo-wrap">
+      <div class="bingo-grid" id="bingoGrid"></div>
+    </div>
+
+    <div class="bottom-actions">
+      <button class="btn-sm" onclick="showSetup()">⚙️ 設定</button>
+      <button class="btn-sm" onclick="resetBoard()">🔄 リセット</button>
+    </div>
+    <p class="hint" id="gameHint">マスをタップして写真をゲット！📸</p>
+  </div>
+
+  <!-- ══ WINNER ══ -->
+  <div id="winnerScreen" class="screen">
+    <div class="trophy">🏆</div>
+    <div class="winner-name" id="winnerName"></div>
+    <div class="winner-sub" id="winnerSub">がビンゴ達成！</div>
+    <div class="win-badge" id="winBadge"></div>
+    <div class="confetti-row">🎉🎊✨🎈🎊</div>
+    <div class="winner-recap" id="winRecap"></div>
+    <button class="btn-start" style="max-width:260px;margin:0 auto;display:block" onclick="showSetup()">もう一度あそぶ 🌿</button>
+  </div>
+
+</div>
+
+<!-- BINGO FLASH -->
+<div class="bingo-flash" id="bingoFlash" onclick="dismissFlash()">
+  <div class="bingo-popup">
+    <div style="font-size:2rem">🎊</div>
+    <h2>BINGO！！</h2>
+    <div class="bsub" id="flashMsg"></div>
+    <div class="bdismiss">タップして続ける</div>
+  </div>
+</div>
+
+<!-- PASS MODAL (battle turn handoff) -->
+<div class="overlay" id="passOverlay">
+  <div class="pass-modal">
+    <div class="pico">📱</div>
+    <h2>スマホを渡して！</h2>
+    <p class="psub">次は <span class="pname" id="nextPlayerName"></span> のターンです</p>
+    <button class="btn-pass" onclick="startTurn()">準備OK！ 👍</button>
+  </div>
+</div>
+
+<!-- PHOTO MODAL -->
+<div class="overlay" id="photoOverlay">
+  <div class="modal">
+    <h3>📸 見つけた証拠写真</h3>
+    <div class="modal-kw" id="modalKw"></div>
+    <img class="photo-preview" id="photoPreview" src="" alt="">
+    <div class="cam-options" id="camOptions">
+      <div class="cam-btn" onclick="triggerCamera()">
+        <span class="cico">📷</span>カメラで撮る
+      </div>
+      <div class="cam-btn" onclick="triggerLibrary()">
+        <span class="cico">🖼️</span>ライブラリから
+      </div>
+    </div>
+    <input type="file" id="camInput" accept="image/*" capture="environment">
+    <input type="file" id="libInput" accept="image/*">
+    <div class="modal-btns" id="modalBtns"></div>
+  </div>
+</div>
+
+<script>
+/* ── TEMPLATES ── */
+const TEMPLATES={
+  park:['犬の散歩','赤いはな','ベンチ','水たまり','トンボ','チョウチョ','どんぐり','お弁当の人','すべり台','噴水','猫','鳥の巣','木の実','大きな木','キノコ','石ころ'],
+  town:['自転車','お店の看板','ポスト','信号機','バス停','宅配のトラック','子ども連れ','工事中','お年寄り','花壇','自販機','マンホール','横断歩道','アンテナ','駐輪場','ゴミ箱'],
+  nature:['バッタ','アリの行列','木の影','きのこ','落ち葉','苔','川の石','クモの巣','鳥の羽','虫のあな','野花','タンポポ','泥んこ','空の雲','きれいな石','枯れ木'],
+  seasons:['桜の花びら','春の若葉','入学式の飾り','ツバメ','青空','雨上がり','ひまわり','セミ','夏祭りの跡','紅葉','コスモス','柿の実','初雪','霜柱','冬の星空','冬鳥'],
+};
+const POOL=['白い車','老夫婦','赤いもの','丸いもの','犬','ネコ','自転車','子ども','帽子の人','影','雲','水','緑の扉','段ボール','消火栓','花'];
+const MODE_DESC={
+  solo:'自分のペースでお散歩ビンゴ！',
+  battle:'1台を交互に持ちまわり！先にビンゴした方の勝ち🏆',
+  coop:'ふたりで協力して全マスコンプを目指そう！🤝'
+};
+
+/* ── STATE ── */
+let gameMode='solo', kwMode='template', selectedTpl='park';
+let board={cells:[],lines:0};       // shared board (solo/coop/battle share same 16 keywords)
+let players=[{name:'プレイヤー１',lines:0,found:0}];
+let currentPlayer=0; // whose turn it is
+let pendingCell=null, pendingPhoto=null;
+
+/* ── INIT ── */
+window.onload=()=>buildKwGrid();
+function buildKwGrid(){
+  const g=document.getElementById('kwGrid');g.innerHTML='';
+  for(let i=0;i<16;i++) g.innerHTML+=`<div class="kw-wrap"><span class="kw-num">${i+1}</span><input class="kw-input" id="kw${i}" placeholder="キーワード ${i+1}" maxlength="10"></div>`;
+}
+
+/* ── SETUP UI ── */
+function setMode(m,btn){
+  gameMode=m;
+  document.querySelectorAll('.mode-card').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('modeDesc').textContent=MODE_DESC[m];
+  document.getElementById('p2field').style.display=m==='solo'?'none':'flex';
+}
+function switchKwTab(tab,btn){
+  kwMode=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('templatePane').style.display=tab==='template'?'block':'none';
+  document.getElementById('customPane').style.display=tab==='custom'?'block':'none';
+}
+function selectTpl(btn,id){
+  selectedTpl=id;
+  document.querySelectorAll('.tpl-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');
+}
+
+/* ── KEYWORDS ── */
+function getKeywords(){
+  if(kwMode==='template') return [...TEMPLATES[selectedTpl]];
+  const pool=[...POOL];const kws=[];
+  for(let i=0;i<16;i++){const v=document.getElementById('kw'+i)?.value.trim();kws.push(v||pool.splice(Math.floor(Math.random()*pool.length),1)[0]||'なにか')}
+  return kws;
+}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+/* ── START ── */
+function startGame(){
+  const p1=document.getElementById('p1name').value.trim()||'プレイヤー１';
+  const p2=document.getElementById('p2name').value.trim()||'プレイヤー２';
+  players=gameMode==='solo'
+    ?[{name:p1,lines:0,found:0}]
+    :[{name:p1,lines:0,found:0},{name:p2,lines:0,found:0}];
+
+  const kws=shuffle(getKeywords()).slice(0,16);
+  board={
+    cells:kws.map((kw,i)=>({id:i,keyword:kw,found:false,photo:null,isFree:i===5,owner:null})),
+    lines:0
+  };
+  board.cells[5].found=true; board.cells[5].keyword='FREE';
+
+  currentPlayer=0;
+  showScreen('gameScreen');
+  renderGameUI();
+
+  if(gameMode==='battle'){
+    // show first pass screen
+    document.getElementById('nextPlayerName').textContent=players[0].name;
+    document.getElementById('passOverlay').classList.add('open');
+  }
+}
+
+/* ── RENDER ── */
+function renderGameUI(){
+  const isB=gameMode==='battle', isC=gameMode==='coop';
+  document.getElementById('turnBanner').style.display=isB?'none':'flex';
+  document.getElementById('scoreboard').style.display=isB?'flex':'none';
+
+  if(!isB){
+    const p=players[currentPlayer]||players[0];
+    const banner=document.getElementById('turnBanner');
+    banner.className='turn-banner '+(isC?'coop':'p1');
+    document.getElementById('turnLabel').textContent=isC?'みんなで探してる！':'NOW PLAYING';
+    document.getElementById('turnName').textContent=isC?`${players[0].name} & ${players[1]?.name||''}`:`${p.name} のターン`;
+    document.getElementById('turnLineCount').textContent=isC?board.lines:p.lines;
+  } else {
+    players.forEach((p,i)=>{
+      document.getElementById('scn'+i).textContent=p.name;
+      document.getElementById('scl'+i).textContent=p.lines;
+      document.getElementById('sc'+i).className='score-card'+(i===1?' blue':'')+(i===currentPlayer?' active-p':'');
+    });
+  }
+
+  // progress
+  const found=board.cells.filter(c=>c.found).length;
+  document.getElementById('progressTxt').textContent=`進捗 (${found}/16)`;
+  document.getElementById('progressPct').textContent=Math.round(found/16*100)+'%';
+  document.getElementById('progressFill').style.width=(found/16*100)+'%';
+
+  // hint
+  if(isB) document.getElementById('gameHint').textContent=`📱 ${players[currentPlayer].name} のターン！マスをタップ`;
+  else if(isC) document.getElementById('gameHint').textContent='ふたりで協力してマスを埋めよう！🤝';
+  else document.getElementById('gameHint').textContent='マスをタップして写真をゲット！📸';
+
+  renderGrid();
+}
+
+function renderGrid(){
+  const lineSet=getLineCells();
+  const g=document.getElementById('bingoGrid');g.innerHTML='';
+  board.cells.forEach(cell=>{
+    const div=document.createElement('div');div.className='cell';
+    if(cell.isFree) div.classList.add('free-cell');
+    else if(cell.found){
+      div.classList.add(cell.owner===1?'found-p2':'found');
+    }
+    if(lineSet.has(cell.id)) div.classList.add('bingo-line');
+
+    if(cell.isFree){
+      div.innerHTML=`<div class="cell-free-icon">⭐</div><div class="cell-free-txt">FREE</div>`;
+    } else if(cell.photo){
+      div.innerHTML=`<img class="cell-photo" src="${cell.photo}">`;
+      div.innerHTML+=`<div class="cell-check ${cell.owner===1?'blue':''}">✓</div>`;
+      if(gameMode==='battle'&&cell.owner!=null) div.innerHTML+=`<div class="cell-owner ${cell.owner===0?'p1o':'p2o'}">${players[cell.owner]?.name[0]||'?'}</div>`;
+    } else {
+      div.innerHTML=`<div class="cell-kw">${cell.keyword}</div>`;
+      if(cell.found) div.innerHTML+=`<div class="cell-check ${cell.owner===1?'blue':''}">✓</div>`;
+    }
+
+    // In battle mode, only allow tapping on your own turn (or untaken cells)
+    if(!cell.isFree){
+      if(gameMode==='battle'){
+        if(!cell.found) div.onclick=()=>openModal(cell.id);
+        else { div.style.cursor='default'; div.onclick=()=>openModal(cell.id); }
+      } else {
+        div.onclick=()=>openModal(cell.id);
+      }
+    }
+    g.appendChild(div);
+  });
+}
+
+/* ── LINES ── */
+function getLines(){
+  const l=[];
+  for(let r=0;r<4;r++) l.push([0,1,2,3].map(c=>r*4+c));
+  for(let c=0;c<4;c++) l.push([0,1,2,3].map(r=>r*4+c));
+  l.push([0,5,10,15]);l.push([3,6,9,12]);
+  return l;
+}
+function getLineCells(){
+  const s=new Set();
+  getLines().forEach(line=>{if(line.every(i=>board.cells[i].found))line.forEach(i=>s.add(i))});
+  return s;
+}
+function countLines(){return getLines().filter(l=>l.every(i=>board.cells[i].found)).length}
+
+// For battle: count lines belonging to a specific player
+function countPlayerLines(pid){
+  return getLines().filter(line=>{
+    const found=line.filter(i=>board.cells[i].found);
+    if(found.length!==4)return false;
+    // count as player's line if majority of cells (or all non-free) belong to them
+    const owned=found.filter(i=>board.cells[i].owner===pid||board.cells[i].isFree);
+    return owned.length===4;
+  }).length;
+}
+
+/* ── PASS MODAL (battle) ── */
+function startTurn(){
+  document.getElementById('passOverlay').classList.remove('open');
+  renderGameUI();
+}
+function passTurn(){
+  currentPlayer=(currentPlayer+1)%2;
+  document.getElementById('nextPlayerName').textContent=players[currentPlayer].name;
+  document.getElementById('passOverlay').classList.add('open');
+}
+
+/* ── PHOTO MODAL ── */
+function openModal(cellId){
+  pendingCell=cellId;pendingPhoto=null;
+  const cell=board.cells[cellId];
+  document.getElementById('modalKw').textContent=cell.keyword;
+  const preview=document.getElementById('photoPreview');
+  if(cell.photo){preview.src=cell.photo;preview.style.display='block';pendingPhoto=cell.photo;}
+  else{preview.style.display='none';preview.src='';}
+  document.getElementById('camOptions').style.display=cell.found&&cell.photo?'none':'grid';
+  const btns=document.getElementById('modalBtns');
+  if(cell.found){
+    btns.innerHTML=`<button class="modal-btn remove" onclick="removeCell()">🗑️ 取り消す</button><button class="modal-btn cancel" onclick="closeModal()">閉じる</button>`;
+  } else {
+    btns.innerHTML=`<button class="modal-btn cancel" onclick="closeModal()">キャンセル</button><button class="modal-btn confirm" id="confirmBtn" onclick="confirmCell()" ${pendingPhoto?'':'disabled'}>決定 ✓</button>`;
+  }
+  document.getElementById('camInput').value='';
+  document.getElementById('libInput').value='';
+  document.getElementById('photoOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('photoOverlay').classList.remove('open');pendingCell=null;pendingPhoto=null;}
+
+function triggerCamera(){document.getElementById('camInput').click()}
+function triggerLibrary(){document.getElementById('libInput').click()}
+
+function handleFileSelect(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    pendingPhoto=ev.target.result;
+    const p=document.getElementById('photoPreview');p.src=pendingPhoto;p.style.display='block';
+    document.getElementById('camOptions').style.display='none';
+    const btn=document.getElementById('confirmBtn');if(btn)btn.disabled=false;
+  };
+  reader.readAsDataURL(file);
+}
+document.getElementById('camInput').addEventListener('change',e=>handleFileSelect(e.target.files[0]));
+document.getElementById('libInput').addEventListener('change',e=>handleFileSelect(e.target.files[0]));
+
+function confirmCell(){
+  if(pendingCell===null)return;
+  const cell=board.cells[pendingCell];
+  const prevLines=countLines();
+
+  cell.found=true;
+  cell.owner=currentPlayer;
+  if(pendingPhoto)cell.photo=pendingPhoto;
+
+  // update player stats
+  players[currentPlayer].found=(players[currentPlayer].found||0)+1;
+  if(gameMode==='battle'){
+    players[currentPlayer].lines=countPlayerLines(currentPlayer);
+  } else {
+    const newLines=countLines();
+    players[currentPlayer].lines=newLines;
+    board.lines=newLines;
+  }
+
+  closeModal();
+  renderGameUI();
+
+  const newLines=countLines();
+  if(newLines>prevLines){
+    setTimeout(()=>{
+      document.getElementById('flashMsg').textContent=`${players[currentPlayer].name} が ${newLines}ライン達成！`;
+      document.getElementById('bingoFlash').classList.add('show');
+    },200);
+  }
+
+  // Win check
+  setTimeout(()=>checkWin(),600);
+
+  // Battle: auto pass after confirming
+  if(gameMode==='battle'&&!checkWinImmediate()){
+    setTimeout(()=>passTurn(),900);
+  }
+}
+
+function removeCell(){
+  if(pendingCell===null)return;
+  const cell=board.cells[pendingCell];
+  cell.found=false;cell.photo=null;cell.owner=null;
+  board.lines=countLines();
+  players.forEach((p,i)=>p.lines=gameMode==='battle'?countPlayerLines(i):countLines());
+  closeModal();renderGameUI();
+}
+
+/* ── WIN CHECK ── */
+function checkWinImmediate(){
+  if(gameMode==='solo'||gameMode==='coop'){
+    return board.cells.filter(c=>!c.isFree).every(c=>c.found);
+  }
+  if(gameMode==='battle'){
+    return players.some((_,i)=>countPlayerLines(i)>=1);
+  }
+  return false;
+}
+
+function checkWin(){
+  if(gameMode==='solo'){
+    const nonFree=board.cells.filter(c=>!c.isFree);
+    if(nonFree.every(c=>c.found)) showWinner('solo');
+  } else if(gameMode==='coop'){
+    const nonFree=board.cells.filter(c=>!c.isFree);
+    if(nonFree.every(c=>c.found)) showWinner('coop');
+    else if(countLines()>=4) showWinner('coop'); // 4 lines = great success
+  } else if(gameMode==='battle'){
+    const winner=players.findIndex((_,i)=>countPlayerLines(i)>=1);
+    if(winner>=0) showWinner('battle',winner);
+  }
+}
+
+function showWinner(mode,pid=0){
+  if(mode==='solo'){
+    document.getElementById('winnerName').textContent=players[0].name;
+    document.getElementById('winnerSub').textContent='が全マスコンプリート！';
+    document.getElementById('winBadge').textContent=`🎯 ${board.lines} ライン完成！`;
+    document.getElementById('winRecap').innerHTML=`
+      <div class="recap-row"><span>埋めたマス</span><span class="recap-val">15 / 15 ✓</span></div>
+      <div class="recap-row"><span>ライン数</span><span class="recap-val">${board.lines} ライン</span></div>`;
+  } else if(mode==='coop'){
+    const found=board.cells.filter(c=>c.found&&!c.isFree).length;
+    document.getElementById('winnerName').textContent=`${players[0].name} & ${players[1]?.name||''}`;
+    document.getElementById('winnerSub').textContent='チームでビンゴ達成！🤝';
+    document.getElementById('winBadge').textContent=`🎯 ${countLines()} ライン完成！`;
+    document.getElementById('winRecap').innerHTML=`
+      <div class="recap-row"><span>合計マス</span><span class="recap-val">${found} / 15</span></div>
+      <div class="recap-row"><span>ライン数</span><span class="recap-val">${countLines()} ライン</span></div>`;
+  } else {
+    const w=players[pid];
+    const l=players[(pid+1)%2];
+    document.getElementById('winnerName').textContent=w.name;
+    document.getElementById('winnerSub').textContent='が先にビンゴ達成！🏆';
+    document.getElementById('winBadge').textContent=`🎯 ${countPlayerLines(pid)} ライン先取！`;
+    document.getElementById('winRecap').innerHTML=`
+      <div class="recap-row"><span>${w.name}</span><span class="recap-val">${countPlayerLines(pid)} ライン 🏆</span></div>
+      <div class="recap-row"><span>${l.name}</span><span class="recap-val">${countPlayerLines((pid+1)%2)} ライン</span></div>`;
+  }
+  showScreen('winnerScreen');
+}
+
+/* ── BINGO FLASH ── */
+function dismissFlash(){document.getElementById('bingoFlash').classList.remove('show')}
+
+/* ── UTILS ── */
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function showSetup(){showScreen('setupScreen');board={cells:[],lines:0};players=[]}
+function resetBoard(){
+  if(!board.cells.length)return;
+  board.cells.forEach(c=>{if(!c.isFree){c.found=false;c.photo=null;c.owner=null}});
+  board.lines=0;players.forEach(p=>{p.lines=0;p.found=0});
+  currentPlayer=0;
+  if(gameMode==='battle'){
+    document.getElementById('nextPlayerName').textContent=players[0]?.name||'P1';
+    document.getElementById('passOverlay').classList.add('open');
+  }
+  renderGameUI();
+}
+</script>
+</body>
+</html>
