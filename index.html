@@ -543,15 +543,21 @@ input:checked+.toggle-sl:before{transform:translateX(20px)}
     </div>
     <img class="photo-preview" id="photoPreview" src="" alt="">
 
-    <!-- Single camera button - works on both iOS and Android -->
+    <!-- Two buttons: camera (capture) + library (no capture) -->
     <div class="camera-btn-wrap" id="cameraBtnWrap">
-      <div class="camera-btn" onclick="document.getElementById('photoFileInput').click()">
-        <span class="cb-ico">📷</span>
-        <span class="cb-txt">写真を追加する</span>
-        <span class="cb-sub">カメラ または ライブラリから選択</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="camera-btn" onclick="document.getElementById('camFileInput').click()">
+          <span class="cb-ico">📷</span>
+          <span class="cb-txt">カメラで撮る</span>
+        </div>
+        <div class="camera-btn" onclick="document.getElementById('libFileInput').click()">
+          <span class="cb-ico">🖼️</span>
+          <span class="cb-txt">ライブラリから</span>
+        </div>
       </div>
     </div>
-    <input type="file" id="photoFileInput" accept="image/*">
+    <input type="file" id="camFileInput" accept="image/*" capture="camera">
+    <input type="file" id="libFileInput" accept="image/*">
 
     <div class="loc-row">
       <div class="loc-info" id="locInfo">📍 位置情報なし</div>
@@ -840,14 +846,14 @@ function openModal(cellId){
   }else{
     btns.innerHTML=`<button class="mbtn cancel" onclick="closeModal()">キャンセル</button><button class="mbtn confirm" id="confirmBtn" onclick="confirmCell()" ${pendingPhoto?'':'disabled'}>決定 ✓</button>`;
   }
-  document.getElementById('photoFileInput').value='';
+  document.getElementById('camFileInput').value='';document.getElementById('libFileInput').value='';
   document.getElementById('photoOverlay').classList.add('open');
 }
 function closeModal(){document.getElementById('photoOverlay').classList.remove('open');pendingCell=null;pendingPhoto=null;pendingLoc=null}
 
 /* ── SINGLE PHOTO INPUT: works on iOS Safari + Android Chrome ── */
-document.getElementById('photoFileInput').addEventListener('change',function(e){
-  const file=e.target.files[0];if(!file)return;
+function handlePhotoFile(file){
+  if(!file)return;
   const reader=new FileReader();
   reader.onload=ev=>{
     pendingPhoto=ev.target.result;
@@ -856,7 +862,9 @@ document.getElementById('photoFileInput').addEventListener('change',function(e){
     const btn=document.getElementById('confirmBtn');if(btn)btn.disabled=false;
   };
   reader.readAsDataURL(file);
-});
+}
+document.getElementById('camFileInput').addEventListener('change',function(e){handlePhotoFile(e.target.files[0])});
+document.getElementById('libFileInput').addEventListener('change',function(e){handlePhotoFile(e.target.files[0])});
 
 /* ── LOCATION ── */
 function getLocation(){
