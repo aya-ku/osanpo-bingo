@@ -3,314 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>お散歩ビンゴ 🌿</title>
-<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<title>お散歩ビンゴ</title>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Opti:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --green:#3da55e;--green-l:#b8e8c8;--green-d:#1e6e3a;
-  --yellow:#ffd740;--orange:#ff7043;--blue:#42a5f5;--blue-l:#e3f2fd;
-  --pink:#e91e8c;--pink-l:#fce4ec;--purple:#7c4dff;--purple-l:#ede7f6;
-  --red:#f44336;--shadow:rgba(30,80,50,0.13);
+  /* Earth palette */
+  --terra:#C4714A;   --terra-l:#F0D5C4;  --terra-d:#8C4A2A;
+  --khaki:#7A8C5E;   --khaki-l:#D4DEC4;  --khaki-d:#4A5C34;
+  --beige:#F5EFE4;   --beige-d:#E8DDD0;  --beige-dd:#C8B8A4;
+  --stone:#5C5248;   --stone-l:#9A8E84;
+  --cream:#FDFAF6;
+  --blue:#6B8FAB;    --blue-l:#D4E4F0;
+  --rose:#C4785A;
+  --shadow:rgba(92,82,72,0.12);
+  --shadow-sm:rgba(92,82,72,0.08);
 }
-body{font-family:'Nunito',sans-serif;background:#e8f5ec;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 70% 40% at 15% 5%,#c6e8f8 0%,transparent 55%),
-    radial-gradient(ellipse 60% 50% at 85% 90%,#c8f0d4 0%,transparent 55%),
-    radial-gradient(ellipse 50% 35% at 70% 20%,#fff9c4 0%,transparent 50%)}
-.leaf{position:fixed;font-size:1.4rem;opacity:.15;pointer-events:none;z-index:0;animation:floatLeaf linear infinite}
-.leaf:nth-child(1){top:8%;left:5%;animation-duration:18s}
-.leaf:nth-child(2){top:20%;right:4%;animation-duration:22s;animation-delay:-4s}
-.leaf:nth-child(3){top:55%;left:2%;animation-duration:25s;animation-delay:-10s}
-.leaf:nth-child(4){top:75%;right:6%;animation-duration:20s;animation-delay:-7s}
-@keyframes floatLeaf{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(15deg)}}
-.container{position:relative;z-index:1;max-width:500px;margin:0 auto;padding:10px 13px 50px}
+body{font-family:'DM Sans',sans-serif;background:var(--beige);min-height:100vh;overflow-x:hidden;color:var(--stone)}
+
+/* Subtle texture overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+
+.container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:10px 14px 50px}
 .screen{display:none}.screen.active{display:block}
 
-/* HEADER */
-.header{text-align:center;padding:14px 0 8px}
-.header h1{font-family:'Mochiy Pop One',sans-serif;font-size:1.8rem;color:var(--green-d);text-shadow:3px 3px 0 rgba(61,165,94,.22);letter-spacing:.06em}
-.header .sub{font-size:.78rem;color:#4a7a5a;font-weight:700;margin-top:2px}
-.deco-row{font-size:1.1rem;margin:4px 0 2px;letter-spacing:4px}
+/* ── HEADER ── */
+.header{text-align:center;padding:20px 0 14px}
+.header-badge{display:inline-flex;align-items:center;gap:6px;background:var(--terra-l);color:var(--terra-d);font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:99px;margin-bottom:10px;letter-spacing:.06em}
+.header h1{font-family:'Kaisei Opti',serif;font-size:2rem;color:var(--stone);letter-spacing:.04em;line-height:1.2}
+.header h1 span{color:var(--terra)}
+.header .sub{font-size:.78rem;color:var(--stone-l);font-weight:500;margin-top:5px}
 
-/* NAV TABS */
-.nav-tabs{display:flex;background:white;border-radius:18px;padding:4px;box-shadow:0 4px 16px var(--shadow);margin-bottom:12px;gap:3px}
-.nav-tab{flex:1;padding:8px 4px;border:none;border-radius:14px;background:transparent;font-family:'Nunito',sans-serif;font-weight:800;font-size:.72rem;color:#999;cursor:pointer;transition:all .2s;text-align:center}
-.nav-tab.active{background:var(--green);color:white;box-shadow:0 3px 10px rgba(61,165,94,.35)}
-.nav-tab .ntico{display:block;font-size:1.1rem;margin-bottom:2px}
+/* ── SETUP NAV ── */
+.setup-nav{display:flex;background:var(--cream);border-radius:16px;padding:4px;box-shadow:0 2px 12px var(--shadow-sm);margin-bottom:14px;gap:3px;border:1px solid var(--beige-d)}
+.snav-btn{flex:1;padding:8px 4px;border:none;border-radius:12px;background:transparent;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.7rem;color:var(--stone-l);cursor:pointer;transition:all .2s;text-align:center}
+.snav-btn .sico{display:block;font-size:1rem;margin-bottom:2px}
+.snav-btn.active{background:var(--terra);color:white;box-shadow:0 3px 10px rgba(196,113,74,.3)}
 
-/* CARD */
-.card{background:white;border-radius:20px;padding:16px;box-shadow:0 5px 24px var(--shadow);margin-bottom:11px}
-.card h2{font-family:'Mochiy Pop One',sans-serif;font-size:.9rem;color:var(--green-d);margin-bottom:11px;display:flex;align-items:center;gap:6px}
+/* ── CARD ── */
+.card{background:var(--cream);border-radius:20px;padding:18px;box-shadow:0 2px 16px var(--shadow-sm);margin-bottom:12px;border:1px solid var(--beige-d)}
+.card-title{font-family:'Kaisei Opti',serif;font-size:.95rem;color:var(--stone);margin-bottom:13px;display:flex;align-items:center;gap:7px}
+.card-title span{font-size:1.1rem}
 
-/* TABS */
-.tab-row{display:flex;border:2px solid var(--green-l);border-radius:13px;overflow:hidden;margin-bottom:11px}
-.tab-btn{flex:1;padding:8px 4px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;background:white;color:#999;border:none;cursor:pointer;transition:all .2s}
-.tab-btn.active{background:var(--green);color:white}
+/* ── TAB ROW ── */
+.tab-row{display:flex;border:1.5px solid var(--beige-d);border-radius:12px;overflow:hidden;margin-bottom:12px;background:var(--beige)}
+.tab-btn{flex:1;padding:8px 4px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.75rem;background:transparent;color:var(--stone-l);border:none;cursor:pointer;transition:all .2s}
+.tab-btn.active{background:var(--cream);color:var(--terra);font-weight:700;box-shadow:inset 0 0 0 1.5px var(--terra-l)}
 
-/* MODE CARDS */
-.mode-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
-.mode-card{padding:10px 5px;border:2px solid #e8e8e8;border-radius:14px;background:white;cursor:pointer;text-align:center;transition:all .2s}
-.mode-card:hover,.mode-card.selected{border-color:var(--green);background:#f0faf4}
-.mode-card .mico{font-size:1.6rem;display:block;margin-bottom:3px}
-.mode-card .mlabel{font-size:.68rem;font-weight:800;color:#555}
-.mode-card.selected .mlabel{color:var(--green-d)}
-.mode-desc{font-size:.72rem;color:#888;font-weight:700;text-align:center;padding:3px 0 9px;line-height:1.5}
+/* ── MODE CARDS ── */
+.mode-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.mode-card{padding:13px 6px;border:1.5px solid var(--beige-d);border-radius:16px;background:var(--beige);cursor:pointer;text-align:center;transition:all .2s}
+.mode-card:hover{border-color:var(--terra-l);background:var(--cream)}
+.mode-card.selected{border-color:var(--terra);background:var(--terra-l)}
+.mode-card .mico{font-size:1.7rem;display:block;margin-bottom:4px}
+.mode-card .mlabel{font-size:.68rem;font-weight:700;color:var(--stone-l)}
+.mode-card.selected .mlabel{color:var(--terra-d)}
+.mode-desc{font-size:.72rem;color:var(--stone-l);text-align:center;padding:3px 4px 10px;line-height:1.6;font-weight:500}
 
-/* TIMER OPTION */
-.timer-row{display:flex;align-items:center;gap:8px;padding:10px 0 4px;border-top:1px solid #f0f0f0;margin-top:8px}
-.timer-toggle{position:relative;width:44px;height:24px;cursor:pointer}
+/* ── TIMER ROW ── */
+.timer-row{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--beige);border-radius:12px;border:1.5px solid var(--beige-d);margin-top:8px}
+.timer-label{font-weight:600;font-size:.8rem;color:var(--stone);flex:1}
+.timer-toggle{position:relative;width:42px;height:22px;cursor:pointer;flex-shrink:0}
 .timer-toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:99px;transition:.3s}
-.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s}
-input:checked+.toggle-slider{background:var(--orange)}
-input:checked+.toggle-slider:before{transform:translateX(20px)}
-.timer-label{font-weight:800;font-size:.82rem;color:#555;flex:1}
-.timer-select{padding:5px 8px;border:2px solid #e0e0e0;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.78rem;outline:none}
+.toggle-sl{position:absolute;inset:0;background:var(--beige-dd);border-radius:99px;transition:.3s}
+.toggle-sl:before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+input:checked+.toggle-sl{background:var(--terra)}
+input:checked+.toggle-sl:before{transform:translateX(20px)}
+.timer-select{padding:4px 8px;border:1.5px solid var(--beige-d);border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.75rem;background:var(--cream);color:var(--stone);outline:none}
 
-/* PLAYERS */
-.players-row{display:flex;gap:7px;margin-bottom:10px}
+/* ── PLAYER INPUTS ── */
+.players-row{display:flex;gap:8px;margin-bottom:12px}
 .player-field{flex:1;position:relative}
-.player-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:.9rem}
-.player-input{width:100%;padding:9px 9px 9px 29px;border:2px solid #e0e0e0;border-radius:12px;font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;outline:none;transition:border-color .2s}
-.player-input:focus{border-color:var(--green)}
+.player-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.9rem}
+.player-input{width:100%;padding:10px 10px 10px 30px;border:1.5px solid var(--beige-d);border-radius:13px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;outline:none;background:var(--beige);color:var(--stone);transition:border-color .2s}
+.player-input:focus{border-color:var(--terra);background:var(--cream)}
+.player-input::placeholder{color:var(--beige-dd)}
 
-/* TEMPLATE */
-.template-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.tpl-btn{padding:8px 10px;border:2px solid #e8e8e8;border-radius:12px;background:white;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;color:#555;transition:all .15s}
-.tpl-btn:hover,.tpl-btn.selected{border-color:var(--green);background:#f0faf4;color:var(--green-d)}
+/* ── TEMPLATE ── */
+.template-list{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tpl-btn{padding:9px 11px;border:1.5px solid var(--beige-d);border-radius:13px;background:var(--beige);cursor:pointer;display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.8rem;color:var(--stone);transition:all .15s}
+.tpl-btn:hover{border-color:var(--terra-l);background:var(--cream)}
+.tpl-btn.selected{border-color:var(--terra);background:var(--terra-l);color:var(--terra-d)}
 
-/* CUSTOM KW */
-.kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+/* ── CUSTOM KW ── */
+.kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
 .kw-wrap{position:relative}
-.kw-num{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:var(--green-l);color:var(--green-d);font-size:.6rem;font-weight:900;display:flex;align-items:center;justify-content:center}
-.kw-input{width:100%;padding:8px 8px 8px 28px;border:2px solid #e0e0e0;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;outline:none;transition:border-color .2s}
-.kw-input:focus{border-color:var(--green)}
-.mission-toggle{display:flex;align-items:center;gap:6px;margin-bottom:8px;padding:8px 10px;background:#fff8e1;border-radius:11px;border:1px solid #ffe082}
-.mission-toggle label{font-size:.78rem;font-weight:800;color:#e65100;flex:1;cursor:pointer}
+.kw-num{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:var(--terra-l);color:var(--terra-d);font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.kw-input{width:100%;padding:8px 8px 8px 28px;border:1.5px solid var(--beige-d);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;outline:none;background:var(--beige);color:var(--stone);transition:border-color .2s}
+.kw-input:focus{border-color:var(--terra);background:var(--cream)}
+.kw-input::placeholder{color:var(--beige-dd)}
 
-/* SAVE SET */
-.save-set-row{border-top:1px solid #f0f0f0;padding-top:10px;margin-top:4px}
-.save-set-row h3{font-size:.78rem;font-weight:800;color:#888;margin-bottom:7px}
-.save-inputs{display:flex;flex-direction:column;gap:6px}
-.save-input{padding:8px 11px;border:2px solid #e0e0e0;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;outline:none;transition:border-color .2s}
-.save-input:focus{border-color:var(--green)}
-.btn-save-set{padding:8px 14px;border:2px solid var(--green);border-radius:11px;background:white;color:var(--green-d);font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;transition:all .2s;margin-top:4px;width:100%}
-.btn-save-set:hover{background:var(--green-l)}
+/* ── MISSION TOGGLE ── */
+.mission-toggle{display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(196,113,74,.08);border-radius:12px;border:1.5px solid var(--terra-l);margin-bottom:10px}
+.mission-toggle label{font-size:.76rem;font-weight:600;color:var(--terra-d);flex:1;cursor:pointer}
 
-/* SAVED SETS */
-.saved-list{display:flex;flex-direction:column;gap:7px}
-.saved-item{padding:11px 13px;border:2px solid #e8e8e8;border-radius:14px;background:white;cursor:pointer;transition:all .2s;position:relative}
-.saved-item:hover{border-color:var(--green);background:#f8fff9}
-.saved-item .si-title{font-weight:800;font-size:.88rem;color:#333;margin-bottom:2px}
-.saved-item .si-comment{font-size:.72rem;color:#888;font-weight:600}
-.saved-item .si-meta{font-size:.65rem;color:#bbb;font-weight:700;margin-top:4px}
-.saved-item .si-del{position:absolute;top:8px;right:10px;background:none;border:none;color:#ccc;font-size:1rem;cursor:pointer;padding:2px}
-.saved-item .si-del:hover{color:var(--red)}
-.empty-saves{text-align:center;padding:24px;color:#ccc;font-weight:700;font-size:.85rem}
+/* ── SAVE SET ── */
+.save-set-wrap{border-top:1.5px solid var(--beige-d);padding-top:12px;margin-top:6px}
+.save-set-wrap h3{font-size:.75rem;font-weight:700;color:var(--stone-l);margin-bottom:8px;letter-spacing:.04em}
+.save-input{width:100%;padding:9px 12px;border:1.5px solid var(--beige-d);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;outline:none;background:var(--beige);color:var(--stone);margin-bottom:7px;transition:border-color .2s}
+.save-input:focus{border-color:var(--terra);background:var(--cream)}
+.save-input::placeholder{color:var(--beige-dd)}
+.btn-save{width:100%;padding:9px;border:1.5px solid var(--terra);border-radius:11px;background:transparent;color:var(--terra);font-family:'DM Sans',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s}
+.btn-save:hover{background:var(--terra-l)}
 
-/* BUTTONS */
-.btn-start{width:100%;padding:14px;background:linear-gradient(135deg,#4bc77a 0%,var(--green-d) 100%);color:white;border:none;border-radius:17px;font-family:'Mochiy Pop One',sans-serif;font-size:1rem;letter-spacing:.06em;cursor:pointer;box-shadow:0 5px 20px rgba(61,165,94,.4);transition:all .2s}
-.btn-start:hover{transform:translateY(-2px)}
-.btn-sm{padding:9px 12px;border-radius:12px;border:2px solid #e0e0e0;background:white;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;color:#666;transition:all .2s}
-.btn-sm:hover{border-color:var(--green);color:var(--green-d);background:#f0faf4}
-.hint{font-size:.7rem;color:#9dbf9e;font-weight:700;text-align:center;padding:5px 0 2px}
+/* ── SAVED ITEMS ── */
+.saved-list{display:flex;flex-direction:column;gap:8px}
+.saved-item{padding:12px 14px;border:1.5px solid var(--beige-d);border-radius:15px;background:var(--cream);cursor:pointer;transition:all .2s;position:relative}
+.saved-item:hover{border-color:var(--terra-l);background:var(--terra-l)}
+.si-title{font-weight:700;font-size:.85rem;color:var(--stone);margin-bottom:2px}
+.si-comment{font-size:.7rem;color:var(--stone-l);font-weight:500}
+.si-meta{font-size:.62rem;color:var(--beige-dd);font-weight:600;margin-top:5px}
+.si-del{position:absolute;top:10px;right:12px;background:none;border:none;color:var(--beige-dd);font-size:.9rem;cursor:pointer;padding:2px}
+.si-del:hover{color:#c62828}
+.empty-saves{text-align:center;padding:28px 16px;color:var(--beige-dd);font-size:.82rem;font-weight:600;line-height:1.7}
 
-/* TIMER BAR */
-.timer-bar-wrap{margin-bottom:10px;display:none}
-.timer-display{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.timer-text{font-family:'Mochiy Pop One',sans-serif;font-size:1.2rem;color:var(--green-d)}
-.timer-text.urgent{color:var(--red);animation:pulse .5s infinite alternate}
-@keyframes pulse{from{opacity:1}to{opacity:.5}}
-.timer-bar{height:8px;background:#e0e0e0;border-radius:99px;overflow:hidden}
+/* ── BUTTONS ── */
+.btn-start{width:100%;padding:15px;background:var(--terra);color:white;border:none;border-radius:18px;font-family:'Kaisei Opti',serif;font-size:1rem;letter-spacing:.06em;cursor:pointer;box-shadow:0 6px 20px rgba(196,113,74,.35);transition:all .2s}
+.btn-start:hover{background:var(--terra-d);transform:translateY(-1px);box-shadow:0 8px 24px rgba(196,113,74,.4)}
+.btn-start:active{transform:translateY(0)}
+.btn-sm{padding:9px 13px;border-radius:12px;border:1.5px solid var(--beige-d);background:var(--cream);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.75rem;color:var(--stone);transition:all .2s}
+.btn-sm:hover{border-color:var(--terra-l);color:var(--terra-d);background:var(--terra-l)}
+.hint{font-size:.68rem;color:var(--beige-dd);font-weight:600;text-align:center;padding:6px 0 2px}
+
+/* ── TIMER BAR ── */
+.timer-bar-wrap{margin-bottom:12px;display:none;background:var(--cream);border-radius:14px;padding:10px 14px;border:1px solid var(--beige-d)}
+.timer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.timer-text{font-family:'Kaisei Opti',serif;font-size:1.3rem;color:var(--stone)}
+.timer-text.urgent{color:var(--terra);animation:urgentPulse .6s infinite alternate}
+@keyframes urgentPulse{from{opacity:1}to{opacity:.4}}
+.timer-lbl{font-size:.65rem;font-weight:700;color:var(--stone-l);letter-spacing:.05em}
+.timer-track{height:6px;background:var(--beige-d);border-radius:99px;overflow:hidden}
 .timer-fill{height:100%;border-radius:99px;transition:width 1s linear,background .5s}
 
-/* TURN BANNER */
-.turn-banner{border-radius:16px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;box-shadow:0 3px 14px var(--shadow)}
-.turn-banner.p1{background:linear-gradient(135deg,#e8f5e9,#c8e8d0);border:2px solid var(--green)}
-.turn-banner.p2{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2px solid var(--blue)}
-.turn-banner.coop{background:linear-gradient(135deg,#fff8e1,#ffecb3);border:2px solid var(--yellow)}
-.turn-info{flex:1}
-.turn-label{font-size:.65rem;font-weight:800;color:#888;letter-spacing:.05em}
-.turn-name{font-family:'Mochiy Pop One',sans-serif;font-size:1rem;color:var(--green-d)}
-.turn-banner.p2 .turn-name{color:#1565c0}
-.turn-banner.coop .turn-name{color:#e65100}
-.turn-score{text-align:right}
-.score-num{font-family:'Mochiy Pop One',sans-serif;font-size:1.3rem;color:var(--green-d)}
-.score-lbl{font-size:.6rem;font-weight:800;color:#aaa}
+/* ── TURN BANNER ── */
+.turn-banner{border-radius:16px;padding:11px 15px;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.turn-banner.solo{background:var(--cream);border:1.5px solid var(--terra-l)}
+.turn-banner.battle-p1{background:var(--cream);border:1.5px solid var(--terra-l)}
+.turn-banner.battle-p2{background:var(--cream);border:1.5px solid var(--blue-l)}
+.turn-banner.coop{background:var(--cream);border:1.5px solid var(--khaki-l)}
+.turn-info .turn-lbl{font-size:.6rem;font-weight:700;color:var(--stone-l);letter-spacing:.08em;text-transform:uppercase}
+.turn-info .turn-name{font-family:'Kaisei Opti',serif;font-size:1rem;color:var(--stone);margin-top:1px}
+.turn-score-num{font-family:'Kaisei Opti',serif;font-size:1.5rem;color:var(--terra)}
+.turn-score-lbl{font-size:.6rem;font-weight:700;color:var(--stone-l);text-align:right}
 
-/* SCOREBOARD */
-.scoreboard{display:flex;gap:7px;margin-bottom:9px}
-.score-card{flex:1;background:white;border-radius:14px;padding:9px;text-align:center;box-shadow:0 2px 10px var(--shadow);border:2px solid transparent;transition:all .2s}
-.score-card.active-p{border-color:var(--green);background:#f0faf4}
-.score-card.active-p.blue{border-color:var(--blue);background:var(--blue-l)}
-.sc-name{font-weight:800;font-size:.75rem;color:#666;margin-bottom:2px}
-.sc-lines{font-family:'Mochiy Pop One',sans-serif;font-size:1.4rem;color:var(--green-d)}
-.score-card.blue .sc-lines{color:#1565c0}
-.sc-lbl{font-size:.58rem;color:#aaa;font-weight:700}
+/* ── SCOREBOARD ── */
+.scoreboard{display:flex;gap:8px;margin-bottom:11px;align-items:center}
+.score-card{flex:1;background:var(--cream);border-radius:15px;padding:10px 12px;text-align:center;border:1.5px solid var(--beige-d);transition:all .2s}
+.score-card.active-p1{border-color:var(--terra);background:var(--terra-l)}
+.score-card.active-p2{border-color:var(--blue);background:var(--blue-l)}
+.sc-name{font-weight:700;font-size:.72rem;color:var(--stone-l);margin-bottom:2px}
+.sc-lines{font-family:'Kaisei Opti',serif;font-size:1.5rem;color:var(--stone)}
+.score-card.active-p1 .sc-lines{color:var(--terra-d)}
+.score-card.active-p2 .sc-lines{color:var(--blue)}
+.sc-lbl{font-size:.58rem;color:var(--stone-l);font-weight:600}
+.vs-label{font-family:'Kaisei Opti',serif;font-size:1rem;color:var(--beige-dd)}
 
-/* PROGRESS */
-.progress-wrap{margin-bottom:9px}
-.progress-label{font-size:.72rem;font-weight:700;color:#666;margin-bottom:4px;display:flex;justify-content:space-between}
-.progress-bar{height:6px;background:#e0e0e0;border-radius:99px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),#82e0a0);border-radius:99px;transition:width .4s}
+/* ── PROGRESS ── */
+.progress-wrap{margin-bottom:10px}
+.progress-row{display:flex;justify-content:space-between;font-size:.7rem;font-weight:600;color:var(--stone-l);margin-bottom:5px}
+.progress-track{height:6px;background:var(--beige-d);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--terra),var(--rose));border-radius:99px;transition:width .4s ease}
 
-/* BINGO GRID */
-.bingo-wrap{background:white;border-radius:20px;padding:10px;box-shadow:0 5px 24px var(--shadow);margin-bottom:11px}
-.bingo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.cell{aspect-ratio:1;border-radius:11px;border:2px solid #e8e8e8;background:#fafafa;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .18s;position:relative;padding:2px;user-select:none;-webkit-tap-highlight-color:transparent}
+/* ── BINGO GRID ── */
+.bingo-wrap{background:var(--cream);border-radius:22px;padding:12px;box-shadow:0 2px 20px var(--shadow-sm);margin-bottom:12px;border:1px solid var(--beige-d)}
+.bingo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.cell{aspect-ratio:1;border-radius:13px;border:1.5px solid var(--beige-d);background:var(--beige);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .18s;position:relative;padding:3px;user-select:none;-webkit-tap-highlight-color:transparent}
 .cell:active{transform:scale(.93)}
-.cell.found{border-color:var(--green);background:linear-gradient(135deg,#e8f5e9,#c8e8d0)}
-.cell.found-p2{border-color:var(--blue);background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
-.cell.bingo-line{background:linear-gradient(135deg,#ffe082,#ffb74d);border-color:var(--orange)}
-.cell.free-cell{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-color:#90caf9;cursor:default}
-.cell.mission-cell{border-color:var(--purple);background:linear-gradient(135deg,#f3e5f5,#e1bee7)}
-.cell.mission-cell.found{border-color:var(--purple);background:linear-gradient(135deg,#ce93d8,#ab47bc)}
-.cell.challenged{border-color:var(--pink)!important;background:linear-gradient(135deg,var(--pink-l),#f8bbd0)!important;animation:challenged-pulse 1s infinite alternate}
-@keyframes challenged-pulse{from{box-shadow:0 0 0 rgba(233,30,140,0)}to{box-shadow:0 0 10px rgba(233,30,140,.4)}}
-.cell-kw{font-size:clamp(.46rem,2vw,.7rem);font-weight:800;color:#444;text-align:center;line-height:1.2;word-break:break-all}
-.cell-mission-badge{position:absolute;top:2px;left:2px;font-size:.55rem;background:var(--purple);color:white;padding:1px 4px;border-radius:5px;font-weight:800}
-.cell-challenge-badge{position:absolute;top:2px;left:2px;font-size:.55rem;background:var(--pink);color:white;padding:1px 4px;border-radius:5px;font-weight:800}
-.cell-photo{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block}
-.cell-check{position:absolute;top:2px;right:2px;width:14px;height:14px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:white}
+.cell:hover{border-color:var(--terra-l)}
+.cell.found{border-color:var(--terra);background:var(--terra-l)}
+.cell.found-p2{border-color:var(--blue);background:var(--blue-l)}
+.cell.bingo-line{background:linear-gradient(135deg,#f5e6c8,#e8c990);border-color:#C8A84A}
+.cell.free-cell{background:var(--khaki-l);border-color:var(--khaki);cursor:default}
+.cell.mission-cell{border-color:var(--terra);border-style:dashed}
+.cell.mission-cell.found{border-style:solid}
+.cell.challenged{border-color:var(--rose)!important;border-style:dashed!important;background:rgba(196,120,90,.08)!important}
+.cell-kw{font-size:clamp(.46rem,1.9vw,.68rem);font-weight:600;color:var(--stone);text-align:center;line-height:1.25;word-break:break-all}
+.cell-photo{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block}
+.cell-check{position:absolute;top:2px;right:2px;width:14px;height:14px;background:var(--terra);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:white}
 .cell-check.blue{background:var(--blue)}
-.cell-check.purple{background:var(--purple)}
-.cell-free-icon{font-size:1.2rem}
-.cell-free-txt{font-size:.46rem;font-weight:800;color:#64b5f6;margin-top:1px}
-.cell-owner-badge{position:absolute;bottom:2px;left:2px;font-size:.42rem;font-weight:900;padding:1px 3px;border-radius:5px;color:white}
-.cell-owner-badge.p1o{background:var(--green)}
-.cell-owner-badge.p2o{background:var(--blue)}
+.cell-badge{position:absolute;top:2px;left:2px;font-size:.46rem;background:var(--terra);color:white;padding:1px 4px;border-radius:5px;font-weight:700}
+.cell-badge.challenge{background:var(--rose)}
+.cell-map-pin{position:absolute;bottom:2px;right:2px;font-size:.65rem}
+.cell-owner{position:absolute;bottom:2px;left:2px;font-size:.42rem;font-weight:700;padding:1px 3px;border-radius:5px;color:white;background:var(--terra)}
+.cell-owner.p2o{background:var(--blue)}
+.cell-free-icon{font-size:1.3rem}
+.cell-free-txt{font-size:.45rem;font-weight:700;color:var(--khaki-d);margin-top:1px}
 
-/* MAP PIN on cell */
-.cell-map-pin{position:absolute;bottom:2px;right:2px;font-size:.7rem}
+/* ── BOTTOM ACTIONS ── */
+.bottom-actions{display:flex;gap:7px}
 
-/* BOTTOM */
-.bottom-actions{display:flex;gap:7px;flex-wrap:wrap}
-
-/* ── TREASURE MAP SCREEN ── */
-#mapScreen .map-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-#mapScreen .map-header h2{font-family:'Mochiy Pop One',sans-serif;font-size:1.1rem;color:var(--green-d)}
-.map-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.map-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px var(--shadow);border:2px solid #e8e8e8}
-.map-card.has-loc{border-color:var(--green)}
+/* ── MAP ── */
+.map-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.map-title{font-family:'Kaisei Opti',serif;font-size:1.1rem;color:var(--stone)}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.map-card{background:var(--cream);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px var(--shadow-sm);border:1.5px solid var(--beige-d)}
+.map-card.has-loc{border-color:var(--khaki)}
 .map-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.map-card .mc-body{padding:8px 10px}
-.map-card .mc-kw{font-weight:800;font-size:.82rem;color:#333;margin-bottom:2px}
-.map-card .mc-loc{font-size:.65rem;color:var(--green-d);font-weight:700;display:flex;align-items:center;gap:3px}
-.map-card .mc-comment{font-size:.68rem;color:#888;margin-top:3px;font-weight:600}
-.map-card .mc-comment-input{width:100%;padding:4px 7px;border:1px solid #e0e0e0;border-radius:7px;font-family:'Nunito',sans-serif;font-size:.7rem;font-weight:700;outline:none;margin-top:4px}
-.map-card .mc-comment-input:focus{border-color:var(--green)}
-.map-empty{text-align:center;padding:40px 20px;color:#ccc;font-weight:700}
+.map-card .mc-body{padding:9px 11px}
+.mc-kw{font-weight:700;font-size:.82rem;color:var(--stone);margin-bottom:3px}
+.mc-loc{font-size:.64rem;color:var(--khaki-d);font-weight:600;display:flex;align-items:center;gap:3px}
+.mc-comment{font-size:.67rem;color:var(--stone-l);margin-top:4px;font-weight:500}
+.map-empty{text-align:center;padding:40px 20px;color:var(--beige-dd);font-size:.82rem;font-weight:600;line-height:1.8}
 
-/* OVERLAYS */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:14px}
+/* ── OVERLAYS ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(92,82,72,.5);z-index:200;align-items:center;justify-content:center;padding:16px}
 .overlay.open{display:flex}
-@keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes popIn{from{transform:scale(.7) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 
-/* PHOTO MODAL */
-.modal{background:white;border-radius:20px;padding:18px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275);max-height:90vh;overflow-y:auto}
-.modal h3{font-family:'Mochiy Pop One',sans-serif;font-size:.92rem;color:var(--green-d);text-align:center;margin-bottom:9px}
-.modal-kw{background:var(--green-l);border-radius:11px;padding:9px;text-align:center;font-weight:800;font-size:1rem;color:#333;margin-bottom:10px}
-.modal-mission{background:var(--purple-l);border-radius:11px;padding:8px 10px;margin-bottom:10px;border-left:3px solid var(--purple)}
-.modal-mission .mm-label{font-size:.65rem;font-weight:800;color:var(--purple);margin-bottom:2px}
-.modal-mission .mm-text{font-size:.85rem;font-weight:800;color:#333}
-.modal-challenge{background:var(--pink-l);border-radius:11px;padding:8px 10px;margin-bottom:10px;border-left:3px solid var(--pink)}
-.modal-challenge .mc-label{font-size:.65rem;font-weight:800;color:var(--pink);margin-bottom:2px}
-.modal-challenge .mc-text{font-size:.82rem;font-weight:800;color:#333}
-.photo-preview{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;margin-bottom:10px;display:none}
-.cam-options{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
-.cam-btn{padding:12px 6px;border:2px solid #e0e0e0;border-radius:13px;background:white;cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;color:#555}
-.cam-btn:hover{border-color:var(--green);background:#f0faf4;color:var(--green-d)}
-.cam-btn .cico{font-size:1.6rem;display:block;margin-bottom:3px}
-#camInput,#libInput{display:none}
-.loc-row{display:flex;gap:6px;margin-bottom:10px;align-items:center}
-.loc-info{flex:1;font-size:.72rem;font-weight:700;color:var(--green-d);background:var(--green-l);padding:6px 9px;border-radius:9px;min-height:32px;display:flex;align-items:center}
-.btn-get-loc{padding:7px 10px;border:2px solid var(--green);border-radius:9px;background:white;color:var(--green-d);font-family:'Nunito',sans-serif;font-weight:800;font-size:.72rem;cursor:pointer;white-space:nowrap}
-.comment-row{margin-bottom:10px}
-.comment-row label{font-size:.72rem;font-weight:800;color:#888;display:block;margin-bottom:4px}
-.comment-input{width:100%;padding:7px 10px;border:2px solid #e0e0e0;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:700;outline:none;transition:border-color .2s}
-.comment-input:focus{border-color:var(--green)}
+/* ── PHOTO MODAL ── */
+.modal{background:var(--cream);border-radius:24px;padding:20px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(92,82,72,.25);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275);max-height:90vh;overflow-y:auto;border:1px solid var(--beige-d)}
+.modal-title{font-family:'Kaisei Opti',serif;font-size:.95rem;color:var(--stone);text-align:center;margin-bottom:10px}
+.modal-kw{background:var(--terra-l);border-radius:12px;padding:10px;text-align:center;font-weight:700;font-size:1rem;color:var(--terra-d);margin-bottom:11px}
+.modal-mission-box{background:rgba(122,140,94,.1);border-radius:11px;padding:9px 11px;margin-bottom:10px;border-left:3px solid var(--khaki)}
+.modal-mission-box .mb-lbl{font-size:.62rem;font-weight:700;color:var(--khaki-d);margin-bottom:2px;letter-spacing:.05em}
+.modal-mission-box .mb-txt{font-size:.83rem;font-weight:600;color:var(--stone)}
+.modal-challenge-box{background:rgba(196,120,90,.1);border-radius:11px;padding:9px 11px;margin-bottom:10px;border-left:3px solid var(--rose)}
+.modal-challenge-box .mb-lbl{font-size:.62rem;font-weight:700;color:var(--rose);margin-bottom:2px;letter-spacing:.05em}
+.modal-challenge-box .mb-txt{font-size:.83rem;font-weight:600;color:var(--stone)}
+.photo-preview{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;margin-bottom:11px;display:none}
+
+/* ── CAMERA BUTTON (single, cross-platform) ── */
+.camera-btn-wrap{margin-bottom:11px}
+.camera-btn{width:100%;padding:16px;border:2px dashed var(--beige-d);border-radius:16px;background:var(--beige);cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:5px}
+.camera-btn:hover{border-color:var(--terra);background:var(--terra-l)}
+.camera-btn .cb-ico{font-size:2rem}
+.camera-btn .cb-txt{font-size:.78rem;font-weight:700;color:var(--stone-l)}
+.camera-btn .cb-sub{font-size:.65rem;color:var(--beige-dd);font-weight:500}
+#photoFileInput{display:none}
+
+/* ── LOCATION & COMMENT ── */
+.loc-row{display:flex;gap:7px;margin-bottom:10px;align-items:stretch}
+.loc-info{flex:1;font-size:.7rem;font-weight:600;color:var(--khaki-d);background:var(--khaki-l);padding:7px 10px;border-radius:10px;display:flex;align-items:center;min-height:34px}
+.btn-get-loc{padding:7px 11px;border:1.5px solid var(--khaki);border-radius:10px;background:var(--cream);color:var(--khaki-d);font-family:'DM Sans',sans-serif;font-weight:700;font-size:.7rem;cursor:pointer;white-space:nowrap}
+.comment-label{font-size:.7rem;font-weight:700;color:var(--stone-l);display:block;margin-bottom:5px}
+.comment-input{width:100%;padding:8px 11px;border:1.5px solid var(--beige-d);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;outline:none;background:var(--beige);color:var(--stone);margin-bottom:11px;transition:border-color .2s}
+.comment-input:focus{border-color:var(--terra);background:var(--cream)}
+.comment-input::placeholder{color:var(--beige-dd)}
+
+/* ── MODAL BUTTONS ── */
 .modal-btns{display:flex;gap:7px}
-.modal-btn{flex:1;padding:10px;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;border:none;transition:all .2s}
-.modal-btn.cancel{background:#f0f0f0;color:#888}
-.modal-btn.confirm{background:linear-gradient(135deg,#4bc77a,var(--green-d));color:white;box-shadow:0 3px 12px rgba(61,165,94,.35)}
-.modal-btn.confirm:disabled{opacity:.4;cursor:not-allowed}
-.modal-btn.remove{background:#fce4e4;color:#c62828}
+.mbtn{flex:1;padding:11px;border-radius:13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;border:none;transition:all .2s}
+.mbtn.cancel{background:var(--beige);color:var(--stone-l);border:1.5px solid var(--beige-d)}
+.mbtn.cancel:hover{background:var(--beige-d)}
+.mbtn.confirm{background:var(--terra);color:white;box-shadow:0 4px 14px rgba(196,113,74,.3)}
+.mbtn.confirm:hover{background:var(--terra-d)}
+.mbtn.confirm:disabled{opacity:.4;cursor:not-allowed}
+.mbtn.remove{background:var(--beige);color:#c62828;border:1.5px solid #ffcdd2}
+.mbtn.remove:hover{background:#ffebee}
 
-/* CHALLENGE MODAL */
-.challenge-modal{background:white;border-radius:20px;padding:18px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275)}
-.challenge-modal h3{font-family:'Mochiy Pop One',sans-serif;font-size:1rem;color:var(--pink);text-align:center;margin-bottom:10px}
-.challenge-to{text-align:center;font-size:.8rem;font-weight:700;color:#888;margin-bottom:10px}
-.challenge-to span{color:#333;font-weight:800}
-.challenge-input{width:100%;padding:10px 12px;border:2px solid #e0e0e0;border-radius:12px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;outline:none;margin-bottom:10px;transition:border-color .2s}
-.challenge-input:focus{border-color:var(--pink)}
-.challenge-presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.challenge-preset{padding:5px 10px;border:2px solid #e0e0e0;border-radius:20px;background:white;font-size:.7rem;font-weight:800;color:#666;cursor:pointer;transition:all .15s}
-.challenge-preset:hover{border-color:var(--pink);color:var(--pink);background:var(--pink-l)}
+/* ── CHALLENGE MODAL ── */
+.challenge-modal{background:var(--cream);border-radius:22px;padding:20px;width:100%;max-width:340px;box-shadow:0 20px 60px rgba(92,82,72,.25);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275);border:1px solid var(--beige-d)}
+.challenge-title{font-family:'Kaisei Opti',serif;font-size:1rem;color:var(--terra);text-align:center;margin-bottom:10px}
+.challenge-sub{font-size:.72rem;color:var(--stone-l);text-align:center;margin-bottom:10px;font-weight:500}
+.challenge-kw{background:var(--terra-l);border-radius:10px;padding:7px 11px;text-align:center;font-weight:700;font-size:.88rem;color:var(--terra-d);margin-bottom:11px}
+.challenge-input{width:100%;padding:10px 12px;border:1.5px solid var(--beige-d);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;outline:none;background:var(--beige);color:var(--stone);margin-bottom:10px}
+.challenge-input:focus{border-color:var(--rose);background:var(--cream)}
+.challenge-input::placeholder{color:var(--beige-dd)}
+.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.preset-btn{padding:5px 10px;border:1.5px solid var(--beige-d);border-radius:20px;background:var(--beige);font-size:.68rem;font-weight:600;color:var(--stone);cursor:pointer;transition:all .15s}
+.preset-btn:hover{border-color:var(--terra);color:var(--terra-d);background:var(--terra-l)}
 .challenge-btns{display:flex;gap:7px}
-.btn-challenge-send{flex:1;padding:11px;background:linear-gradient(135deg,#f06292,var(--pink));color:white;border:none;border-radius:13px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;box-shadow:0 3px 12px rgba(233,30,140,.3)}
+.btn-send-challenge{flex:1;padding:11px;background:var(--terra);color:white;border:none;border-radius:13px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;box-shadow:0 4px 12px rgba(196,113,74,.3)}
 
-/* PASS MODAL */
-.pass-modal{background:white;border-radius:22px;padding:24px 20px;width:100%;max-width:300px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275)}
-.pass-modal .pico{font-size:2.8rem;margin-bottom:8px}
-.pass-modal h2{font-family:'Mochiy Pop One',sans-serif;font-size:1.2rem;color:var(--green-d);margin-bottom:5px}
-.pass-modal .psub{font-size:.78rem;color:#888;font-weight:700;margin-bottom:16px}
-.pass-modal .pname{color:var(--blue);font-size:1rem}
-.btn-pass{width:100%;padding:12px;background:linear-gradient(135deg,#42a5f5,#1565c0);color:white;border:none;border-radius:14px;font-family:'Mochiy Pop One',sans-serif;font-size:.95rem;cursor:pointer}
+/* ── PASS MODAL ── */
+.pass-modal{background:var(--cream);border-radius:22px;padding:28px 22px;width:100%;max-width:300px;text-align:center;box-shadow:0 20px 60px rgba(92,82,72,.25);animation:popIn .3s cubic-bezier(.175,.885,.32,1.275);border:1px solid var(--beige-d)}
+.pass-ico{font-size:2.8rem;margin-bottom:8px}
+.pass-title{font-family:'Kaisei Opti',serif;font-size:1.2rem;color:var(--stone);margin-bottom:5px}
+.pass-sub{font-size:.76rem;color:var(--stone-l);font-weight:500;margin-bottom:18px;line-height:1.6}
+.pass-sub strong{color:var(--terra)}
+.btn-pass{width:100%;padding:13px;background:var(--khaki);color:white;border:none;border-radius:15px;font-family:'Kaisei Opti',serif;font-size:.95rem;cursor:pointer;box-shadow:0 4px 14px rgba(122,140,94,.3)}
 
-/* BINGO FLASH */
-.bingo-flash{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45)}
+/* ── BINGO FLASH ── */
+.bingo-flash{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(92,82,72,.5)}
 .bingo-flash.show{display:flex}
-.bingo-popup{background:linear-gradient(135deg,#ffe57f,#ffb74d);border-radius:26px;padding:24px 36px;text-align:center;box-shadow:0 20px 60px rgba(255,140,66,.5);animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
-.bingo-popup h2{font-family:'Mochiy Pop One',sans-serif;font-size:1.9rem;color:white;text-shadow:3px 3px 0 rgba(0,0,0,.15)}
-.bingo-popup .bsub{color:rgba(255,255,255,.9);font-weight:700;font-size:.85rem;margin-top:4px}
-.bingo-popup .bdismiss{margin-top:12px;font-size:.72rem;color:rgba(255,255,255,.7);font-weight:600}
+.bingo-popup{background:var(--cream);border-radius:26px;padding:28px 40px;text-align:center;box-shadow:0 20px 60px rgba(196,113,74,.3);animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);border:2px solid var(--terra-l)}
+.bingo-popup h2{font-family:'Kaisei Opti',serif;font-size:2rem;color:var(--terra)}
+.bingo-sub{font-size:.82rem;color:var(--stone-l);font-weight:600;margin-top:5px}
+.bingo-dismiss{margin-top:14px;font-size:.68rem;color:var(--beige-dd);font-weight:600}
 
-/* TIME UP */
-.timeup-modal{background:white;border-radius:24px;padding:28px 24px;width:100%;max-width:320px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
-.timeup-modal .tuco{font-size:3rem;margin-bottom:8px}
-.timeup-modal h2{font-family:'Mochiy Pop One',sans-serif;font-size:1.5rem;color:var(--red);margin-bottom:6px}
-.timeup-result{font-weight:700;font-size:.85rem;color:#555;margin-bottom:16px;line-height:1.6}
+/* ── TIME UP ── */
+.timeup-modal{background:var(--cream);border-radius:22px;padding:28px 22px;width:100%;max-width:300px;text-align:center;box-shadow:0 20px 60px rgba(92,82,72,.25);animation:popIn .35s cubic-bezier(.175,.885,.32,1.275);border:1px solid var(--beige-d)}
+.timeup-ico{font-size:3rem;margin-bottom:8px}
+.timeup-title{font-family:'Kaisei Opti',serif;font-size:1.4rem;color:var(--terra);margin-bottom:8px}
+.timeup-result{font-size:.82rem;color:var(--stone-l);margin-bottom:18px;line-height:1.8;font-weight:500}
 
-/* WINNER */
-#winnerScreen{text-align:center;padding:32px 0}
-.trophy{font-size:4.5rem;animation:trophyBounce 1s infinite alternate}
+/* ── WINNER ── */
+#winnerScreen{text-align:center;padding:36px 0}
+.trophy{font-size:4.5rem;animation:trophyBounce .9s infinite alternate}
 @keyframes trophyBounce{from{transform:scale(1) rotate(-5deg)}to{transform:scale(1.1) rotate(5deg)}}
-.winner-name{font-family:'Mochiy Pop One',sans-serif;font-size:1.8rem;color:var(--green-d);margin:10px 0 4px}
-.winner-sub{color:#888;font-weight:700;margin-bottom:7px}
-.win-badge{display:inline-block;background:var(--yellow);padding:5px 14px;border-radius:18px;font-weight:800;font-size:.85rem;color:#7a5000;margin-bottom:20px}
-.confetti-row{font-size:1.4rem;letter-spacing:6px;margin-bottom:18px}
-.winner-recap{background:white;border-radius:16px;padding:12px;box-shadow:0 4px 14px var(--shadow);margin-bottom:20px;text-align:left}
-.recap-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f0f0f0;font-weight:700;font-size:.82rem;color:#555}
+.winner-name{font-family:'Kaisei Opti',serif;font-size:1.9rem;color:var(--stone);margin:12px 0 4px}
+.winner-sub{color:var(--stone-l);font-weight:500;font-size:.88rem;margin-bottom:10px}
+.win-badge{display:inline-block;background:var(--terra-l);color:var(--terra-d);padding:5px 16px;border-radius:99px;font-weight:700;font-size:.82rem;margin-bottom:22px;border:1px solid var(--terra)}
+.confetti-row{font-size:1.4rem;letter-spacing:7px;margin-bottom:20px}
+.winner-recap{background:var(--cream);border-radius:18px;padding:14px;box-shadow:0 2px 14px var(--shadow-sm);margin-bottom:22px;text-align:left;border:1px solid var(--beige-d)}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--beige-d);font-size:.82rem;color:var(--stone-l);font-weight:600}
 .recap-row:last-child{border-bottom:none}
-.recap-val{font-family:'Mochiy Pop One',sans-serif;font-size:.95rem;color:var(--green-d)}
+.recap-val{font-family:'Kaisei Opti',serif;font-size:.95rem;color:var(--terra)}
 </style>
 </head>
 <body>
 
-<div class="leaf">🍃</div><div class="leaf">🌿</div><div class="leaf">🍀</div><div class="leaf">🌱</div>
-
 <div class="container">
+
+  <!-- HEADER -->
   <div class="header">
-    <div class="deco-row">🌸🌿🦋🌻🐦</div>
-    <h1>お散歩ビンゴ</h1>
+    <div class="header-badge">🌿 OSANPO BINGO</div>
+    <h1>お散歩<span>ビンゴ</span></h1>
     <div class="sub">見つけたら写真でゲット！</div>
   </div>
 
   <!-- ══ SETUP ══ -->
   <div id="setupScreen" class="screen active">
 
-    <!-- NAV inside setup -->
-    <div class="nav-tabs">
-      <button class="nav-tab active" onclick="switchSetupTab('play',this)"><span class="ntico">🎮</span>あそぶ</button>
-      <button class="nav-tab" onclick="switchSetupTab('custom',this)"><span class="ntico">✏️</span>キーワード作成</button>
-      <button class="nav-tab" onclick="switchSetupTab('saved',this)"><span class="ntico">💾</span>保存済み</button>
+    <div class="setup-nav">
+      <button class="snav-btn active" onclick="switchSetupTab('play',this)"><span class="sico">🎮</span>あそぶ</button>
+      <button class="snav-btn" onclick="switchSetupTab('custom',this)"><span class="sico">✏️</span>キーワード</button>
+      <button class="snav-btn" onclick="switchSetupTab('saved',this)"><span class="sico">💾</span>保存済み</button>
     </div>
 
     <!-- PLAY TAB -->
     <div id="playTab">
       <div class="card">
-        <h2>🎮 ゲームモード</h2>
+        <div class="card-title"><span>🎮</span>ゲームモード</div>
         <div class="mode-cards">
           <div class="mode-card selected" onclick="setMode('solo',this)"><span class="mico">🙋</span><span class="mlabel">ソロ</span></div>
           <div class="mode-card" onclick="setMode('battle',this)"><span class="mico">⚔️</span><span class="mlabel">対戦</span></div>
@@ -319,19 +334,18 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
         <div class="mode-desc" id="modeDesc">自分のペースでお散歩ビンゴ！</div>
         <div class="players-row">
           <div class="player-field">
-            <span class="player-icon">🟢</span>
+            <span class="player-icon">🟤</span>
             <input class="player-input" id="p1name" placeholder="プレイヤー１" maxlength="8">
           </div>
           <div class="player-field" id="p2field" style="display:none">
-            <span class="player-icon">🔵</span>
+            <span class="player-icon">🟢</span>
             <input class="player-input" id="p2name" placeholder="プレイヤー２" maxlength="8">
           </div>
         </div>
-        <!-- Timer -->
         <div class="timer-row">
-          <span style="font-size:1rem">⏱️</span>
+          <span>⏱️</span>
           <span class="timer-label">タイムアタック</span>
-          <label class="timer-toggle"><input type="checkbox" id="timerToggle" onchange="toggleTimer(this)"><span class="toggle-slider"></span></label>
+          <label class="timer-toggle"><input type="checkbox" id="timerToggle" onchange="toggleTimer(this)"><span class="toggle-sl"></span></label>
           <select class="timer-select" id="timerSelect" style="display:none">
             <option value="10">10分</option>
             <option value="20" selected>20分</option>
@@ -342,7 +356,7 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
       </div>
 
       <div class="card">
-        <h2>🏷️ キーワードセット</h2>
+        <div class="card-title"><span>🏷️</span>キーワードセット</div>
         <div class="tab-row">
           <button class="tab-btn active" onclick="switchKwTab('template',this)">📋 テンプレート</button>
           <button class="tab-btn" onclick="switchKwTab('usersaved',this)">💾 保存済み</button>
@@ -367,72 +381,66 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
     <!-- CUSTOM KW TAB -->
     <div id="customTab" style="display:none">
       <div class="card">
-        <h2>✏️ キーワードを作る</h2>
+        <div class="card-title"><span>✏️</span>キーワードを作る</div>
         <div class="mission-toggle">
           <span>🎭</span>
-          <label for="missionToggle">ミッションマスを混ぜる（難しいお題付きマス）</label>
-          <label class="timer-toggle"><input type="checkbox" id="missionToggle"><span class="toggle-slider" style="background:#7c4dff"></span></label>
+          <label for="missionToggle">ミッションマスを混ぜる</label>
+          <label class="timer-toggle"><input type="checkbox" id="missionToggle"><span class="toggle-sl" style="background:var(--terra)"></span></label>
         </div>
         <div class="kw-grid" id="kwGrid"></div>
-        <div class="save-set-row">
+        <div class="save-set-wrap">
           <h3>💾 このセットを保存する</h3>
-          <div class="save-inputs">
-            <input class="save-input" id="setTitle" placeholder="テーマ名（例：夏の公園）" maxlength="20">
-            <input class="save-input" id="setComment" placeholder="ひとことメモ（例：子どもと一緒に！）" maxlength="40">
-          </div>
-          <button class="btn-save-set" onclick="saveCustomSet()">💾 セットを保存する</button>
+          <input class="save-input" id="setTitle" placeholder="テーマ名（例：夏の公園）" maxlength="20">
+          <input class="save-input" id="setComment" placeholder="ひとことメモ（例：子どもと一緒に！）" maxlength="40">
+          <button class="btn-save" onclick="saveCustomSet()">💾 セットを保存</button>
         </div>
       </div>
       <button class="btn-start" onclick="startGameWithCustom()">🚶 このキーワードで出発！</button>
       <p class="hint">保存してから出発もできます 🌿</p>
     </div>
 
-    <!-- SAVED SETS TAB -->
+    <!-- SAVED TAB -->
     <div id="savedTab" style="display:none">
       <div class="card">
-        <h2>💾 保存したキーワードセット</h2>
+        <div class="card-title"><span>💾</span>保存したセット</div>
         <div class="saved-list" id="savedSetsList">
-          <div class="empty-saves">💾 まだ保存されたセットがありません<br>「キーワード作成」タブで作ってみよう！</div>
+          <div class="empty-saves">💾 まだ保存されたセットがありません<br>「キーワード」タブで作ってみよう！</div>
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- ══ GAME ══ -->
   <div id="gameScreen" class="screen">
 
-    <!-- Timer bar -->
     <div class="timer-bar-wrap" id="timerBarWrap">
-      <div class="timer-display">
+      <div class="timer-top">
         <span class="timer-text" id="timerText">20:00</span>
-        <span style="font-size:.72rem;font-weight:700;color:#aaa">⏱️ タイムアタック</span>
+        <span class="timer-lbl">⏱️ タイムアタック</span>
       </div>
-      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%;background:var(--green)"></div></div>
+      <div class="timer-track"><div class="timer-fill" id="timerFill" style="width:100%;background:var(--khaki)"></div></div>
     </div>
 
-    <!-- Turn banner (solo/coop) -->
-    <div class="turn-banner p1" id="turnBanner" style="display:none">
+    <div class="turn-banner solo" id="turnBanner" style="display:none">
       <div class="turn-info">
-        <div class="turn-label" id="turnLabel">NOW PLAYING</div>
+        <div class="turn-lbl" id="turnLabel">NOW PLAYING</div>
         <div class="turn-name" id="turnName">P1</div>
       </div>
-      <div class="turn-score">
-        <div class="score-num" id="turnLineCount">0</div>
-        <div class="score-lbl">ライン</div>
+      <div>
+        <div class="turn-score-num" id="turnLineCount">0</div>
+        <div class="turn-score-lbl">ライン</div>
       </div>
     </div>
 
-    <!-- Scoreboard (battle) -->
     <div class="scoreboard" id="scoreboard" style="display:none">
-      <div class="score-card active-p" id="sc0"><div class="sc-name" id="scn0">P1</div><div class="sc-lines" id="scl0">0</div><div class="sc-lbl">ライン</div></div>
-      <div style="display:flex;align-items:center;font-family:'Mochiy Pop One',sans-serif;font-size:1.1rem;color:#ccc">VS</div>
-      <div class="score-card blue" id="sc1"><div class="sc-name" id="scn1">P2</div><div class="sc-lines" id="scl1">0</div><div class="sc-lbl">ライン</div></div>
+      <div class="score-card active-p1" id="sc0"><div class="sc-name" id="scn0">P1</div><div class="sc-lines" id="scl0">0</div><div class="sc-lbl">ライン</div></div>
+      <div class="vs-label">VS</div>
+      <div class="score-card" id="sc1"><div class="sc-name" id="scn1">P2</div><div class="sc-lines" id="scl1">0</div><div class="sc-lbl">ライン</div></div>
     </div>
 
     <div class="progress-wrap">
-      <div class="progress-label"><span id="progressTxt">進捗</span><span id="progressPct">0%</span></div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-row"><span id="progressTxt">進捗</span><span id="progressPct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     </div>
 
     <div class="bingo-wrap">
@@ -442,20 +450,18 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
     <div class="bottom-actions">
       <button class="btn-sm" onclick="showSetup()">⚙️ 設定</button>
       <button class="btn-sm" onclick="resetBoard()">🔄 リセット</button>
-      <button class="btn-sm" onclick="showScreen('mapScreen')" id="mapBtn">🗺️ 地図</button>
+      <button class="btn-sm" onclick="showScreen('mapScreen')">🗺️ 地図</button>
     </div>
     <p class="hint" id="gameHint">マスをタップして写真をゲット！📸</p>
   </div>
 
-  <!-- ══ MAP SCREEN ══ -->
+  <!-- ══ MAP ══ -->
   <div id="mapScreen" class="screen">
-    <div id="mapScreen" style="padding-top:4px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <button class="btn-sm" onclick="showScreen('gameScreen')">← ゲームに戻る</button>
-        <span style="font-family:'Mochiy Pop One',sans-serif;font-size:1.1rem;color:var(--green-d)">🗺️ 宝の地図</span>
-      </div>
-      <div class="map-grid" id="mapGrid"></div>
+    <div class="map-header">
+      <button class="btn-sm" onclick="showScreen('gameScreen')">← 戻る</button>
+      <span class="map-title">🗺️ 宝の地図</span>
     </div>
+    <div class="map-grid" id="mapGrid"></div>
   </div>
 
   <!-- ══ WINNER ══ -->
@@ -469,23 +475,23 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
     <button class="btn-start" style="max-width:250px;margin:0 auto;display:block" onclick="showSetup()">もう一度あそぶ 🌿</button>
   </div>
 
-</div><!-- /container -->
+</div>
 
 <!-- BINGO FLASH -->
 <div class="bingo-flash" id="bingoFlash" onclick="dismissFlash()">
   <div class="bingo-popup">
-    <div style="font-size:1.8rem">🎊</div>
+    <div style="font-size:2rem">🎊</div>
     <h2>BINGO！！</h2>
-    <div class="bsub" id="flashMsg"></div>
-    <div class="bdismiss">タップして続ける</div>
+    <div class="bingo-sub" id="flashMsg"></div>
+    <div class="bingo-dismiss">タップして続ける</div>
   </div>
 </div>
 
 <!-- TIME UP -->
 <div class="overlay" id="timeupOverlay">
   <div class="timeup-modal">
-    <div class="tuco">⌛</div>
-    <h2>タイムアップ！</h2>
+    <div class="timeup-ico">⌛</div>
+    <div class="timeup-title">タイムアップ！</div>
     <div class="timeup-result" id="timeupResult"></div>
     <button class="btn-start" onclick="document.getElementById('timeupOverlay').classList.remove('open');showWinner('timeup')">結果を見る 🏆</button>
   </div>
@@ -494,9 +500,9 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
 <!-- PASS MODAL -->
 <div class="overlay" id="passOverlay">
   <div class="pass-modal">
-    <div class="pico">📱</div>
-    <h2>スマホを渡して！</h2>
-    <p class="psub">次は <span class="pname" id="nextPlayerName"></span> のターンです</p>
+    <div class="pass-ico">📱</div>
+    <div class="pass-title">スマホを渡して！</div>
+    <p class="pass-sub">次は <strong id="nextPlayerName"></strong> のターンです</p>
     <button class="btn-pass" onclick="startTurn()">準備OK！ 👍</button>
   </div>
 </div>
@@ -504,20 +510,20 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
 <!-- CHALLENGE MODAL -->
 <div class="overlay" id="challengeOverlay">
   <div class="challenge-modal">
-    <h3>🃏 お題を送りつける！</h3>
-    <div class="challenge-to">選んだマス：<span id="challengeTargetKw"></span></div>
-    <p style="font-size:.72rem;color:#aaa;font-weight:700;margin-bottom:8px">相手がこのマスを埋める時に表示される追加ミッション：</p>
+    <div class="challenge-title">🃏 お題を送りつける！</div>
+    <div class="challenge-sub">相手がこのマスを埋める時に表示される追加ミッション</div>
+    <div class="challenge-kw" id="challengeTargetKw"></div>
     <input class="challenge-input" id="challengeInput" placeholder="例：その場で3回ジャンプして撮る" maxlength="30">
-    <div class="challenge-presets">
-      <span class="challenge-preset" onclick="setChallengePreset(this)">その場でジャンプ✨</span>
-      <span class="challenge-preset" onclick="setChallengePreset(this)">2人で一緒に写る📸</span>
-      <span class="challenge-preset" onclick="setChallengePreset(this)">真上から撮る🔼</span>
-      <span class="challenge-preset" onclick="setChallengePreset(this)">寝転んで撮る😴</span>
-      <span class="challenge-preset" onclick="setChallengePreset(this)">片足立ちで撮る🦩</span>
+    <div class="presets">
+      <span class="preset-btn" onclick="setPreset(this)">ジャンプして撮る✨</span>
+      <span class="preset-btn" onclick="setPreset(this)">2人で一緒に写る📸</span>
+      <span class="preset-btn" onclick="setPreset(this)">真上から撮る🔼</span>
+      <span class="preset-btn" onclick="setPreset(this)">寝転んで撮る😴</span>
+      <span class="preset-btn" onclick="setPreset(this)">片足立ちで撮る🦩</span>
     </div>
     <div class="challenge-btns">
-      <button class="modal-btn cancel" style="flex:.6" onclick="closeChallengeModal()">キャンセル</button>
-      <button class="btn-challenge-send" onclick="sendChallenge()">送りつける！🃏</button>
+      <button class="mbtn cancel" style="flex:.6" onclick="closeChallengeModal()">キャンセル</button>
+      <button class="btn-send-challenge" onclick="sendChallenge()">送りつける！🃏</button>
     </div>
   </div>
 </div>
@@ -525,33 +531,34 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
 <!-- PHOTO MODAL -->
 <div class="overlay" id="photoOverlay">
   <div class="modal">
-    <h3>📸 見つけた証拠写真</h3>
+    <div class="modal-title">📸 見つけた証拠写真</div>
     <div class="modal-kw" id="modalKw"></div>
-    <div class="modal-mission" id="modalMission" style="display:none">
-      <div class="mm-label">🎭 ミッション</div>
-      <div class="mm-text" id="modalMissionText"></div>
+    <div class="modal-mission-box" id="modalMission" style="display:none">
+      <div class="mb-lbl">🎭 MISSION</div>
+      <div class="mb-txt" id="modalMissionText"></div>
     </div>
-    <div class="modal-challenge" id="modalChallenge" style="display:none">
-      <div class="mc-label">🃏 相手からのお題</div>
-      <div class="mc-text" id="modalChallengeText"></div>
+    <div class="modal-challenge-box" id="modalChallenge" style="display:none">
+      <div class="mb-lbl">🃏 相手からのお題</div>
+      <div class="mb-txt" id="modalChallengeText"></div>
     </div>
     <img class="photo-preview" id="photoPreview" src="" alt="">
-    <div class="cam-options" id="camOptions">
-      <div class="cam-btn" onclick="triggerCamera()"><span class="cico">📷</span>カメラで撮る</div>
-      <div class="cam-btn" onclick="triggerLibrary()"><span class="cico">🖼️</span>ライブラリから</div>
+
+    <!-- Single camera button - works on both iOS and Android -->
+    <div class="camera-btn-wrap" id="cameraBtnWrap">
+      <div class="camera-btn" onclick="document.getElementById('photoFileInput').click()">
+        <span class="cb-ico">📷</span>
+        <span class="cb-txt">写真を追加する</span>
+        <span class="cb-sub">カメラ または ライブラリから選択</span>
+      </div>
     </div>
-    <input type="file" id="camInput" accept="image/*" capture="environment">
-    <input type="file" id="libInput" accept="image/*">
-    <!-- Location -->
+    <input type="file" id="photoFileInput" accept="image/*">
+
     <div class="loc-row">
       <div class="loc-info" id="locInfo">📍 位置情報なし</div>
       <button class="btn-get-loc" onclick="getLocation()">📍 取得</button>
     </div>
-    <!-- Comment -->
-    <div class="comment-row">
-      <label>📝 メモ（地図に表示されます）</label>
-      <input class="comment-input" id="commentInput" placeholder="例：大きな桜の木の下で発見！" maxlength="40">
-    </div>
+    <label class="comment-label">📝 メモ</label>
+    <input class="comment-input" id="commentInput" placeholder="例：大きな桜の木の下で発見！" maxlength="40">
     <div class="modal-btns" id="modalBtns"></div>
   </div>
 </div>
@@ -564,18 +571,18 @@ const TEMPLATES={
   nature:['バッタ','アリの行列','木の影','きのこ','落ち葉','苔','川の石','クモの巣','鳥の羽','虫のあな','野花','タンポポ','泥んこ','空の雲','きれいな石','枯れ木'],
   seasons:['桜の花びら','春の若葉','入学式の飾り','ツバメ','青空','雨上がり','ひまわり','セミ','夏祭りの跡','紅葉','コスモス','柿の実','初雪','霜柱','冬の星空','冬鳥'],
 };
-const MISSIONS=['その場で3回ジャンプして撮る！','2人で一緒に写って撮る！','真上から撮る！','片足立ちで撮る！','寝転んで撮る！','バックで歩きながら撮る！','10秒以内に撮る！','片目をつぶって撮る！'];
+const MISSIONS=['その場で3回ジャンプして撮る！','2人で一緒に写って撮る！','真上から撮る！','片足立ちで撮る！','寝転んで撮る！','後ろ向きで撮る！','10秒以内に撮る！','片目をつぶって撮る！'];
 const POOL=['白い車','老夫婦','赤いもの','丸いもの','犬','ネコ','自転車','子ども','帽子の人','影','雲','水','緑の扉','段ボール','消火栓','花'];
 const MODE_DESC={solo:'自分のペースでお散歩ビンゴ！',battle:'1台を交互に持ちまわり！先にビンゴした方の勝ち🏆',coop:'ふたりで協力して全マスコンプを目指そう！🤝'};
 
 /* ── STATE ── */
-let gameMode='solo', kwMode='template', selectedTpl='park', selectedSavedId=null;
-let useMissions=false, useTimer=false, timerMinutes=20;
+let gameMode='solo',kwMode='template',selectedTpl='park',selectedSavedId=null;
+let useMissions=false,useTimer=false,timerMinutes=20;
 let board={cells:[],lines:0};
 let players=[{name:'プレイヤー１',lines:0,found:0}];
 let currentPlayer=0;
-let pendingCell=null, pendingPhoto=null, pendingLoc=null;
-let timerInterval=null, timerSecsLeft=0, timerTotal=0;
+let pendingCell=null,pendingPhoto=null,pendingLoc=null;
+let timerInterval=null,timerSecsLeft=0,timerTotal=0;
 let challengePendingCell=null;
 
 /* ── INIT ── */
@@ -588,7 +595,7 @@ function buildKwGrid(){
 
 /* ── SETUP TABS ── */
 function switchSetupTab(tab,btn){
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('.snav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   document.getElementById('playTab').style.display=tab==='play'?'block':'none';
   document.getElementById('customTab').style.display=tab==='custom'?'block':'none';
   document.getElementById('savedTab').style.display=tab==='saved'?'block':'none';
@@ -602,10 +609,7 @@ function setMode(m,btn){
   document.getElementById('modeDesc').textContent=MODE_DESC[m];
   document.getElementById('p2field').style.display=m==='solo'?'none':'flex';
 }
-function toggleTimer(el){
-  useTimer=el.checked;
-  document.getElementById('timerSelect').style.display=el.checked?'block':'none';
-}
+function toggleTimer(el){useTimer=el.checked;document.getElementById('timerSelect').style.display=el.checked?'inline-block':'none'}
 function switchKwTab(tab,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   document.getElementById('kwTemplatePane').style.display=tab==='template'?'block':'none';
@@ -613,7 +617,7 @@ function switchKwTab(tab,btn){
   if(tab==='usersaved') renderKwSavedPane();
   kwMode=tab;
 }
-function selectTpl(btn,id){selectedTpl=id;document.querySelectorAll('.tpl-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');kwMode='template';}
+function selectTpl(btn,id){selectedTpl=id;document.querySelectorAll('.tpl-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');kwMode='template'}
 
 /* ── KEYWORDS ── */
 function getKeywordsFromTemplate(){return [...TEMPLATES[selectedTpl]]}
@@ -624,120 +628,77 @@ function getKeywordsFromCustom(){
 }
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
 
-/* ── SAVE/LOAD SETS ── */
+/* ── SAVE/LOAD ── */
 function getSavedSets(){try{return JSON.parse(localStorage.getItem('osanpo_sets')||'[]')}catch{return[]}}
 function saveSets(sets){localStorage.setItem('osanpo_sets',JSON.stringify(sets))}
-
 function saveCustomSet(){
   const title=document.getElementById('setTitle').value.trim();
-  const comment=document.getElementById('setComment').value.trim();
   if(!title){alert('テーマ名を入力してください！');return}
-  const kws=getKeywordsFromCustom();
   const sets=getSavedSets();
-  const newSet={id:Date.now(),title,comment,keywords:kws,missions:document.getElementById('missionToggle').checked,date:new Date().toLocaleDateString('ja-JP')};
-  sets.unshift(newSet);saveSets(sets);
-  alert(`「${title}」を保存しました！💾`);
-  renderSavedSetsPage();
+  sets.unshift({id:Date.now(),title,comment:document.getElementById('setComment').value.trim(),keywords:getKeywordsFromCustom(),missions:document.getElementById('missionToggle').checked,date:new Date().toLocaleDateString('ja-JP')});
+  saveSets(sets);alert(`「${title}」を保存しました！💾`);renderSavedSetsPage();
 }
-
 function loadSavedSets(){renderSavedSetsPage();renderKwSavedPane()}
-
 function renderSavedSetsPage(){
-  const sets=getSavedSets();
-  const el=document.getElementById('savedSetsList');
-  if(!sets.length){el.innerHTML='<div class="empty-saves">💾 まだ保存されたセットがありません<br>「キーワード作成」タブで作ってみよう！</div>';return}
-  el.innerHTML=sets.map(s=>`
-    <div class="saved-item" onclick="loadSetToCustom(${s.id})">
-      <button class="si-del" onclick="event.stopPropagation();deleteSet(${s.id})">🗑️</button>
-      <div class="si-title">${s.title} ${s.missions?'🎭':''}</div>
-      <div class="si-comment">${s.comment||'メモなし'}</div>
-      <div class="si-meta">📅 ${s.date} ・ ${s.keywords.length}キーワード</div>
-    </div>`).join('');
+  const sets=getSavedSets();const el=document.getElementById('savedSetsList');
+  if(!sets.length){el.innerHTML='<div class="empty-saves">💾 まだ保存されたセットがありません<br>「キーワード」タブで作ってみよう！</div>';return}
+  el.innerHTML=sets.map(s=>`<div class="saved-item" onclick="loadSetToCustom(${s.id})">
+    <button class="si-del" onclick="event.stopPropagation();deleteSet(${s.id})">🗑️</button>
+    <div class="si-title">${s.title}${s.missions?' 🎭':''}</div>
+    <div class="si-comment">${s.comment||'メモなし'}</div>
+    <div class="si-meta">📅 ${s.date} · ${s.keywords.length}キーワード</div>
+  </div>`).join('');
 }
-
 function renderKwSavedPane(){
-  const sets=getSavedSets();
-  const el=document.getElementById('kwSavedList');
+  const sets=getSavedSets();const el=document.getElementById('kwSavedList');
   if(!sets.length){el.innerHTML='<p class="empty-saves">保存済みセットがありません</p>';return}
-  el.innerHTML=sets.map(s=>`
-    <div class="saved-item ${selectedSavedId===s.id?'selected':''}" onclick="selectSavedSet(${s.id},this)" style="margin-bottom:7px">
-      <div class="si-title">${s.title} ${s.missions?'🎭':''}</div>
-      <div class="si-comment">${s.comment||''}</div>
-    </div>`).join('');
+  el.innerHTML=sets.map(s=>`<div class="saved-item ${selectedSavedId===s.id?'selected':''}" onclick="selectSavedSet(${s.id},this)" style="margin-bottom:7px">
+    <div class="si-title">${s.title}${s.missions?' 🎭':''}</div>
+    <div class="si-comment">${s.comment||''}</div>
+  </div>`).join('');
 }
-
-function selectSavedSet(id,btn){
-  selectedSavedId=id;
-  document.querySelectorAll('#kwSavedList .saved-item').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
+function selectSavedSet(id,btn){selectedSavedId=id;document.querySelectorAll('#kwSavedList .saved-item').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected')}
 function loadSetToCustom(id){
-  const sets=getSavedSets();const s=sets.find(x=>x.id===id);if(!s)return;
-  buildKwGrid();
-  s.keywords.forEach((kw,i)=>{const el=document.getElementById('kw'+i);if(el)el.value=kw});
+  const s=getSavedSets().find(x=>x.id===id);if(!s)return;
+  buildKwGrid();s.keywords.forEach((kw,i)=>{const el=document.getElementById('kw'+i);if(el)el.value=kw});
   document.getElementById('setTitle').value=s.title;
   document.getElementById('setComment').value=s.comment||'';
   document.getElementById('missionToggle').checked=s.missions;
-  switchSetupTab('custom',document.querySelectorAll('.nav-tab')[1]);
+  switchSetupTab('custom',document.querySelectorAll('.snav-btn')[1]);
 }
-
-function deleteSet(id){
-  if(!confirm('このセットを削除しますか？'))return;
-  const sets=getSavedSets().filter(s=>s.id!==id);saveSets(sets);renderSavedSetsPage();renderKwSavedPane();
-}
+function deleteSet(id){if(!confirm('このセットを削除しますか？'))return;saveSets(getSavedSets().filter(s=>s.id!==id));renderSavedSetsPage();renderKwSavedPane()}
 
 /* ── START ── */
 function startGame(){
   let kws;
   if(kwMode==='usersaved'&&selectedSavedId){
-    const sets=getSavedSets();const s=sets.find(x=>x.id===selectedSavedId);
-    if(s){kws=s.keywords;useMissions=s.missions}else{kws=getKeywordsFromTemplate()}
-  } else {
-    kws=getKeywordsFromTemplate();useMissions=false;
-  }
+    const s=getSavedSets().find(x=>x.id===selectedSavedId);
+    if(s){kws=s.keywords;useMissions=s.missions}else{kws=getKeywordsFromTemplate();useMissions=false}
+  }else{kws=getKeywordsFromTemplate();useMissions=false}
   useTimer=document.getElementById('timerToggle').checked;
   timerMinutes=parseInt(document.getElementById('timerSelect').value)||20;
-  _doStartGame(kws);
+  _doStart(kws);
 }
-
 function startGameWithCustom(){
-  const kws=getKeywordsFromCustom();
   useMissions=document.getElementById('missionToggle').checked;
   useTimer=document.getElementById('timerToggle')?.checked||false;
   timerMinutes=parseInt(document.getElementById('timerSelect')?.value)||20;
-  _doStartGame(kws);
+  _doStart(getKeywordsFromCustom());
 }
-
-function _doStartGame(kws){
+function _doStart(kws){
   const p1=document.getElementById('p1name').value.trim()||'プレイヤー１';
   const p2=document.getElementById('p2name').value.trim()||'プレイヤー２';
   players=gameMode==='solo'?[{name:p1,lines:0,found:0}]:[{name:p1,lines:0,found:0},{name:p2,lines:0,found:0}];
-
   const shuffled=shuffle(kws).slice(0,16);
-  // assign missions to ~3 random cells
-  let missionIndices=new Set();
-  if(useMissions){const pool=[...Array(15).keys()].filter(i=>i!==5);shuffle(pool).slice(0,3).forEach(i=>missionIndices.add(i))}
-
-  board={
-    cells:shuffled.map((kw,i)=>({id:i,keyword:kw,found:false,photo:null,isFree:i===5,owner:null,
-      mission:missionIndices.has(i)?MISSIONS[Math.floor(Math.random()*MISSIONS.length)]:null,
-      challenge:null,loc:null,comment:''})),
-    lines:0
-  };
+  let missionIdx=new Set();
+  if(useMissions){const pool=[...Array(15).keys()].filter(i=>i!==5);shuffle(pool).slice(0,3).forEach(i=>missionIdx.add(i))}
+  board={cells:shuffled.map((kw,i)=>({id:i,keyword:kw,found:false,photo:null,isFree:i===5,owner:null,mission:missionIdx.has(i)?MISSIONS[Math.floor(Math.random()*MISSIONS.length)]:null,challenge:null,loc:null,comment:''})),lines:0};
   board.cells[5].found=true;board.cells[5].keyword='FREE';
-
   currentPlayer=0;
   showScreen('gameScreen');
-
-  if(useTimer) startTimer();
-  else document.getElementById('timerBarWrap').style.display='none';
-
+  if(useTimer)startTimer();else document.getElementById('timerBarWrap').style.display='none';
   renderGameUI();
-  if(gameMode==='battle'){
-    document.getElementById('nextPlayerName').textContent=players[0].name;
-    document.getElementById('passOverlay').classList.add('open');
-  }
+  if(gameMode==='battle'){document.getElementById('nextPlayerName').textContent=players[0].name;document.getElementById('passOverlay').classList.add('open')}
 }
 
 /* ── TIMER ── */
@@ -745,21 +706,17 @@ function startTimer(){
   timerSecsLeft=timerMinutes*60;timerTotal=timerSecsLeft;
   document.getElementById('timerBarWrap').style.display='block';
   updateTimerDisplay();
-  timerInterval=setInterval(()=>{
-    timerSecsLeft--;updateTimerDisplay();
-    if(timerSecsLeft<=0){clearInterval(timerInterval);timeUp()}
-  },1000);
+  timerInterval=setInterval(()=>{timerSecsLeft--;updateTimerDisplay();if(timerSecsLeft<=0){clearInterval(timerInterval);timeUp()}},1000);
 }
 function updateTimerDisplay(){
   const m=Math.floor(timerSecsLeft/60),s=timerSecsLeft%60;
   const txt=document.getElementById('timerText');
   txt.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  txt.className='timer-text'+(timerSecsLeft<=30?' urgent':'');
   const pct=timerSecsLeft/timerTotal*100;
   const fill=document.getElementById('timerFill');
   fill.style.width=pct+'%';
-  const color=pct>50?'var(--green)':pct>20?'var(--orange)':'var(--red)';
-  fill.style.background=color;
-  txt.className='timer-text'+(timerSecsLeft<=30?' urgent':'');
+  fill.style.background=pct>50?'var(--khaki)':pct>20?'var(--terra)':'#c62828';
 }
 function timeUp(){
   clearInterval(timerInterval);
@@ -778,15 +735,15 @@ function renderGameUI(){
   if(!isB){
     const p=players[currentPlayer]||players[0];
     const banner=document.getElementById('turnBanner');
-    banner.className='turn-banner '+(isC?'coop':'p1');
+    banner.className='turn-banner '+(isC?'coop':'solo');
     document.getElementById('turnLabel').textContent=isC?'みんなで探してる！':'NOW PLAYING';
-    document.getElementById('turnName').textContent=isC?`${players.map(p=>p.name).join(' & ')} のターン`:`${p.name} のターン`;
+    document.getElementById('turnName').textContent=isC?players.map(p=>p.name).join(' & ')+' のターン':p.name+' のターン';
     document.getElementById('turnLineCount').textContent=isC?board.lines:p.lines;
-  } else {
+  }else{
     players.forEach((p,i)=>{
       document.getElementById('scn'+i).textContent=p.name;
       document.getElementById('scl'+i).textContent=p.lines;
-      document.getElementById('sc'+i).className='score-card'+(i===1?' blue':'')+(i===currentPlayer?' active-p':'');
+      document.getElementById('sc'+i).className='score-card'+(i===currentPlayer?(i===0?' active-p1':' active-p2'):'');
     });
   }
   const found=board.cells.filter(c=>c.found).length;
@@ -798,35 +755,30 @@ function renderGameUI(){
   else document.getElementById('gameHint').textContent='マスをタップして写真をゲット！📸';
   renderGrid();
 }
-
 function renderGrid(){
-  const lineSet=getLineCells();
-  const g=document.getElementById('bingoGrid');g.innerHTML='';
+  const lineSet=getLineCells();const g=document.getElementById('bingoGrid');g.innerHTML='';
   board.cells.forEach(cell=>{
     const div=document.createElement('div');div.className='cell';
-    if(cell.isFree) div.classList.add('free-cell');
-    else if(cell.found) div.classList.add(cell.owner===1?'found-p2':'found');
-    if(lineSet.has(cell.id)) div.classList.add('bingo-line');
-    if(cell.mission&&!cell.found) div.classList.add('mission-cell');
-    if(cell.challenge&&!cell.found) div.classList.add('challenged');
-
+    if(cell.isFree)div.classList.add('free-cell');
+    else if(cell.found)div.classList.add(cell.owner===1?'found-p2':'found');
+    if(lineSet.has(cell.id))div.classList.add('bingo-line');
+    if(cell.mission&&!cell.found)div.classList.add('mission-cell');
+    if(cell.challenge&&!cell.found)div.classList.add('challenged');
     if(cell.isFree){
       div.innerHTML=`<div class="cell-free-icon">⭐</div><div class="cell-free-txt">FREE</div>`;
-    } else if(cell.photo){
+    }else if(cell.photo){
       div.innerHTML=`<img class="cell-photo" src="${cell.photo}">`;
-      div.innerHTML+=`<div class="cell-check ${cell.owner===1?'blue':cell.mission?'purple':''}">✓</div>`;
-      if(cell.loc) div.innerHTML+=`<div class="cell-map-pin">📍</div>`;
-      if(gameMode==='battle'&&cell.owner!=null) div.innerHTML+=`<div class="cell-owner-badge ${cell.owner===0?'p1o':'p2o'}">${players[cell.owner]?.name[0]||'?'}</div>`;
-    } else {
-      if(cell.mission) div.innerHTML+=`<div class="cell-mission-badge">🎭ミッション</div>`;
-      if(cell.challenge) div.innerHTML+=`<div class="cell-challenge-badge">🃏お題</div>`;
+      div.innerHTML+=`<div class="cell-check${cell.owner===1?' blue':''}">✓</div>`;
+      if(cell.loc)div.innerHTML+=`<div class="cell-map-pin">📍</div>`;
+      if(gameMode==='battle'&&cell.owner!=null)div.innerHTML+=`<div class="cell-owner${cell.owner===1?' p2o':''}">${players[cell.owner]?.name[0]||'?'}</div>`;
+    }else{
+      if(cell.mission)div.innerHTML+=`<div class="cell-badge">🎭</div>`;
+      if(cell.challenge)div.innerHTML+=`<div class="cell-badge challenge">🃏</div>`;
       div.innerHTML+=`<div class="cell-kw">${cell.keyword}</div>`;
-      if(cell.found) div.innerHTML+=`<div class="cell-check ${cell.owner===1?'blue':''}">✓</div>`;
+      if(cell.found)div.innerHTML+=`<div class="cell-check">✓</div>`;
     }
-
     if(!cell.isFree){
-      div.onclick=()=>handleCellTap(cell.id);
-      // Long press = challenge (battle mode)
+      div.onclick=()=>openModal(cell.id);
       if(gameMode==='battle'){
         let lt;
         div.addEventListener('touchstart',()=>{lt=setTimeout(()=>openChallengeModal(cell.id),600)},{passive:true});
@@ -837,132 +789,102 @@ function renderGrid(){
   });
 }
 
-function handleCellTap(cellId){
-  const cell=board.cells[cellId];
-  openModal(cellId);
-}
-
 /* ── LINES ── */
-function getLines(){
-  const l=[];
-  for(let r=0;r<4;r++) l.push([0,1,2,3].map(c=>r*4+c));
-  for(let c=0;c<4;c++) l.push([0,1,2,3].map(r=>r*4+c));
-  l.push([0,5,10,15]);l.push([3,6,9,12]);return l;
-}
+function getLines(){const l=[];for(let r=0;r<4;r++)l.push([0,1,2,3].map(c=>r*4+c));for(let c=0;c<4;c++)l.push([0,1,2,3].map(r=>r*4+c));l.push([0,5,10,15]);l.push([3,6,9,12]);return l}
 function getLineCells(){const s=new Set();getLines().forEach(line=>{if(line.every(i=>board.cells[i].found))line.forEach(i=>s.add(i))});return s}
 function countLines(){return getLines().filter(l=>l.every(i=>board.cells[i].found)).length}
-function countPlayerLines(pid){return getLines().filter(line=>{if(!line.every(i=>board.cells[i].found))return false;return line.filter(i=>!board.cells[i].isFree).every(i=>board.cells[i].owner===pid)}).length}
+function countPlayerLines(pid){return getLines().filter(line=>line.every(i=>board.cells[i].found)&&line.filter(i=>!board.cells[i].isFree).every(i=>board.cells[i].owner===pid)).length}
 
-/* ── CHALLENGE MODAL ── */
+/* ── CHALLENGE ── */
 function openChallengeModal(cellId){
-  const cell=board.cells[cellId];
-  if(cell.found||cell.isFree)return;
+  const cell=board.cells[cellId];if(cell.found||cell.isFree)return;
   challengePendingCell=cellId;
   document.getElementById('challengeTargetKw').textContent=cell.keyword;
   document.getElementById('challengeInput').value='';
   document.getElementById('challengeOverlay').classList.add('open');
 }
 function closeChallengeModal(){document.getElementById('challengeOverlay').classList.remove('open');challengePendingCell=null}
-function setChallengePreset(btn){document.getElementById('challengeInput').value=btn.textContent}
+function setPreset(btn){document.getElementById('challengeInput').value=btn.textContent}
 function sendChallenge(){
   if(challengePendingCell===null)return;
   const txt=document.getElementById('challengeInput').value.trim();
   if(!txt){alert('お題を入力してください！');return}
   board.cells[challengePendingCell].challenge=txt;
-  closeChallengeModal();
-  renderGrid();
-  // Pass turn
+  closeChallengeModal();renderGrid();
   setTimeout(()=>passTurn(),300);
 }
 
-/* ── PASS MODAL ── */
+/* ── PASS ── */
 function startTurn(){document.getElementById('passOverlay').classList.remove('open');renderGameUI()}
-function passTurn(){
-  currentPlayer=(currentPlayer+1)%2;
-  document.getElementById('nextPlayerName').textContent=players[currentPlayer].name;
-  document.getElementById('passOverlay').classList.add('open');
-}
+function passTurn(){currentPlayer=(currentPlayer+1)%2;document.getElementById('nextPlayerName').textContent=players[currentPlayer].name;document.getElementById('passOverlay').classList.add('open')}
 
 /* ── PHOTO MODAL ── */
 function openModal(cellId){
   pendingCell=cellId;pendingPhoto=null;pendingLoc=null;
   const cell=board.cells[cellId];
   document.getElementById('modalKw').textContent=cell.keyword;
-  // Mission
-  if(cell.mission){
-    document.getElementById('modalMission').style.display='block';
-    document.getElementById('modalMissionText').textContent=cell.mission;
-  } else {document.getElementById('modalMission').style.display='none'}
-  // Challenge
-  if(cell.challenge){
-    document.getElementById('modalChallenge').style.display='block';
-    document.getElementById('modalChallengeText').textContent=cell.challenge;
-  } else {document.getElementById('modalChallenge').style.display='none'}
-  // Photo
+  document.getElementById('modalMission').style.display=cell.mission?'block':'none';
+  if(cell.mission)document.getElementById('modalMissionText').textContent=cell.mission;
+  document.getElementById('modalChallenge').style.display=cell.challenge?'block':'none';
+  if(cell.challenge)document.getElementById('modalChallengeText').textContent=cell.challenge;
   const preview=document.getElementById('photoPreview');
   if(cell.photo){preview.src=cell.photo;preview.style.display='block';pendingPhoto=cell.photo}
   else{preview.style.display='none';preview.src=''}
-  document.getElementById('camOptions').style.display=cell.found&&cell.photo?'none':'grid';
-  // Location
-  if(cell.loc){pendingLoc=cell.loc;document.getElementById('locInfo').textContent=`📍 ${cell.loc.label||'位置取得済み'}`}
+  document.getElementById('cameraBtnWrap').style.display=cell.found&&cell.photo?'none':'block';
+  if(cell.loc){pendingLoc=cell.loc;document.getElementById('locInfo').textContent=`📍 ${cell.loc.label}`}
   else document.getElementById('locInfo').textContent='📍 位置情報なし';
-  // Comment
   document.getElementById('commentInput').value=cell.comment||'';
-  // Buttons
   const btns=document.getElementById('modalBtns');
   if(cell.found){
-    btns.innerHTML=`<button class="modal-btn remove" onclick="removeCell()">🗑️ 取り消す</button><button class="modal-btn cancel" onclick="closeModal()">閉じる</button>`;
-  } else {
-    btns.innerHTML=`<button class="modal-btn cancel" onclick="closeModal()">キャンセル</button><button class="modal-btn confirm" id="confirmBtn" onclick="confirmCell()" ${pendingPhoto?'':'disabled'}>決定 ✓</button>`;
+    btns.innerHTML=`<button class="mbtn remove" onclick="removeCell()">🗑️ 取り消す</button><button class="mbtn cancel" onclick="closeModal()">閉じる</button>`;
+  }else{
+    btns.innerHTML=`<button class="mbtn cancel" onclick="closeModal()">キャンセル</button><button class="mbtn confirm" id="confirmBtn" onclick="confirmCell()" ${pendingPhoto?'':'disabled'}>決定 ✓</button>`;
   }
-  document.getElementById('camInput').value='';document.getElementById('libInput').value='';
+  document.getElementById('photoFileInput').value='';
   document.getElementById('photoOverlay').classList.add('open');
 }
 function closeModal(){document.getElementById('photoOverlay').classList.remove('open');pendingCell=null;pendingPhoto=null;pendingLoc=null}
-function triggerCamera(){document.getElementById('camInput').click()}
-function triggerLibrary(){document.getElementById('libInput').click()}
-function handleFile(file){
-  if(!file)return;
+
+/* ── SINGLE PHOTO INPUT: works on iOS Safari + Android Chrome ── */
+document.getElementById('photoFileInput').addEventListener('change',function(e){
+  const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=ev=>{
     pendingPhoto=ev.target.result;
     const p=document.getElementById('photoPreview');p.src=pendingPhoto;p.style.display='block';
-    document.getElementById('camOptions').style.display='none';
+    document.getElementById('cameraBtnWrap').style.display='none';
     const btn=document.getElementById('confirmBtn');if(btn)btn.disabled=false;
-  };reader.readAsDataURL(file);
-}
-document.getElementById('camInput').addEventListener('change',e=>handleFile(e.target.files[0]));
-document.getElementById('libInput').addEventListener('change',e=>handleFile(e.target.files[0]));
+  };
+  reader.readAsDataURL(file);
+});
 
 /* ── LOCATION ── */
 function getLocation(){
   document.getElementById('locInfo').textContent='📍 取得中...';
   if(!navigator.geolocation){document.getElementById('locInfo').textContent='📍 非対応のブラウザです';return}
-  navigator.geolocation.getCurrentPosition(pos=>{
-    pendingLoc={lat:pos.coords.latitude,lng:pos.coords.longitude,label:`${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`};
-    document.getElementById('locInfo').textContent=`📍 ${pendingLoc.label}`;
-  },err=>{
-    document.getElementById('locInfo').textContent='📍 取得できませんでした';
-  },{enableHighAccuracy:true,timeout:8000});
+  navigator.geolocation.getCurrentPosition(
+    pos=>{pendingLoc={lat:pos.coords.latitude,lng:pos.coords.longitude,label:`${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`};document.getElementById('locInfo').textContent=`📍 ${pendingLoc.label}`},
+    ()=>{document.getElementById('locInfo').textContent='📍 取得できませんでした'},
+    {enableHighAccuracy:true,timeout:8000}
+  );
 }
 
 /* ── CONFIRM / REMOVE ── */
 function confirmCell(){
   if(pendingCell===null)return;
-  const cell=board.cells[pendingCell];
-  const prevLines=countLines();
+  const cell=board.cells[pendingCell];const prevLines=countLines();
   cell.found=true;cell.owner=currentPlayer;
   if(pendingPhoto)cell.photo=pendingPhoto;
   if(pendingLoc)cell.loc=pendingLoc;
   cell.comment=document.getElementById('commentInput').value.trim();
   players[currentPlayer].found=(players[currentPlayer].found||0)+1;
-  if(gameMode==='battle') players[currentPlayer].lines=countPlayerLines(currentPlayer);
+  if(gameMode==='battle')players[currentPlayer].lines=countPlayerLines(currentPlayer);
   else{board.lines=countLines();players[currentPlayer].lines=board.lines}
   closeModal();renderGameUI();
   const newLines=countLines();
-  if(newLines>prevLines) setTimeout(()=>{document.getElementById('flashMsg').textContent=`${players[currentPlayer].name} が ${newLines}ライン達成！`;document.getElementById('bingoFlash').classList.add('show')},200);
+  if(newLines>prevLines)setTimeout(()=>{document.getElementById('flashMsg').textContent=`${players[currentPlayer].name} が ${newLines}ライン達成！`;document.getElementById('bingoFlash').classList.add('show')},200);
   setTimeout(()=>checkWin(),600);
-  if(gameMode==='battle'&&!checkWinImmediate()) setTimeout(()=>passTurn(),900);
+  if(gameMode==='battle'&&!checkWinImmediate())setTimeout(()=>passTurn(),900);
 }
 function removeCell(){
   if(pendingCell===null)return;
@@ -974,40 +896,21 @@ function removeCell(){
 
 /* ── WIN ── */
 function checkWinImmediate(){
-  if(gameMode==='battle') return players.some((_,i)=>countPlayerLines(i)>=1);
+  if(gameMode==='battle')return players.some((_,i)=>countPlayerLines(i)>=1);
   return board.cells.filter(c=>!c.isFree).every(c=>c.found);
 }
 function checkWin(){
-  if(gameMode==='solo'){if(board.cells.filter(c=>!c.isFree).every(c=>c.found)) showWinner('solo')}
-  else if(gameMode==='coop'){if(countLines()>=4||board.cells.filter(c=>!c.isFree).every(c=>c.found)) showWinner('coop')}
-  else{const w=players.findIndex((_,i)=>countPlayerLines(i)>=1);if(w>=0) showWinner('battle',w)}
+  if(gameMode==='solo'){if(board.cells.filter(c=>!c.isFree).every(c=>c.found))showWinner('solo')}
+  else if(gameMode==='coop'){if(countLines()>=4||board.cells.filter(c=>!c.isFree).every(c=>c.found))showWinner('coop')}
+  else{const w=players.findIndex((_,i)=>countPlayerLines(i)>=1);if(w>=0)showWinner('battle',w)}
 }
 function showWinner(mode,pid=0){
   clearInterval(timerInterval);
   const found=board.cells.filter(c=>c.found&&!c.isFree).length;
-  if(mode==='solo'){
-    document.getElementById('winnerName').textContent=players[0].name;
-    document.getElementById('winnerSub').textContent='が全マスコンプリート！';
-    document.getElementById('winBadge').textContent=`🎯 ${board.lines} ライン完成！`;
-    document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>埋めたマス</span><span class="recap-val">${found}/15</span></div><div class="recap-row"><span>ライン数</span><span class="recap-val">${board.lines} ライン</span></div>`;
-  } else if(mode==='coop'){
-    document.getElementById('winnerName').textContent=players.map(p=>p.name).join(' & ');
-    document.getElementById('winnerSub').textContent='チームでビンゴ達成！🤝';
-    document.getElementById('winBadge').textContent=`🎯 ${countLines()} ライン完成！`;
-    document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>合計マス</span><span class="recap-val">${found}/15</span></div><div class="recap-row"><span>ライン数</span><span class="recap-val">${countLines()} ライン</span></div>`;
-  } else if(mode==='timeup'){
-    const winner=gameMode==='battle'?players.reduce((a,b,i)=>countPlayerLines(i)>countPlayerLines(a[1])?[b,i]:a,[players[0],0]):null;
-    document.getElementById('winnerName').textContent=winner?players[winner[1]].name:players[0].name;
-    document.getElementById('winnerSub').textContent='タイムアップ！最多ライン！';
-    document.getElementById('winBadge').textContent='⏱️ タイムアタック終了！';
-    document.getElementById('winRecap').innerHTML=players.map((p,i)=>`<div class="recap-row"><span>${p.name}</span><span class="recap-val">${gameMode==='battle'?countPlayerLines(i):countLines()} ライン</span></div>`).join('');
-  } else {
-    const w=players[pid],l=players[(pid+1)%2];
-    document.getElementById('winnerName').textContent=w.name;
-    document.getElementById('winnerSub').textContent='が先にビンゴ達成！🏆';
-    document.getElementById('winBadge').textContent=`🎯 ${countPlayerLines(pid)} ライン先取！`;
-    document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>${w.name}</span><span class="recap-val">${countPlayerLines(pid)} ライン 🏆</span></div><div class="recap-row"><span>${l.name}</span><span class="recap-val">${countPlayerLines((pid+1)%2)} ライン</span></div>`;
-  }
+  if(mode==='solo'){document.getElementById('winnerName').textContent=players[0].name;document.getElementById('winnerSub').textContent='が全マスコンプリート！';document.getElementById('winBadge').textContent=`🎯 ${board.lines} ライン完成！`;document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>埋めたマス</span><span class="recap-val">${found}/15</span></div><div class="recap-row"><span>ライン数</span><span class="recap-val">${board.lines} ライン</span></div>`}
+  else if(mode==='coop'){document.getElementById('winnerName').textContent=players.map(p=>p.name).join(' & ');document.getElementById('winnerSub').textContent='チームでビンゴ達成！🤝';document.getElementById('winBadge').textContent=`🎯 ${countLines()} ライン完成！`;document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>合計マス</span><span class="recap-val">${found}/15</span></div><div class="recap-row"><span>ライン数</span><span class="recap-val">${countLines()} ライン</span></div>`}
+  else if(mode==='timeup'){document.getElementById('winnerName').textContent=gameMode==='battle'?players.reduce((a,_,i)=>countPlayerLines(i)>countPlayerLines(players.indexOf(a))?players[i]:a,players[0]).name:players[0].name;document.getElementById('winnerSub').textContent='タイムアップ！最多ライン！';document.getElementById('winBadge').textContent='⏱️ タイムアタック終了！';document.getElementById('winRecap').innerHTML=players.map((p,i)=>`<div class="recap-row"><span>${p.name}</span><span class="recap-val">${gameMode==='battle'?countPlayerLines(i):countLines()} ライン</span></div>`).join('')}
+  else{const w=players[pid],l=players[(pid+1)%2];document.getElementById('winnerName').textContent=w.name;document.getElementById('winnerSub').textContent='が先にビンゴ達成！🏆';document.getElementById('winBadge').textContent=`🎯 ${countPlayerLines(pid)} ライン先取！`;document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>${w.name}</span><span class="recap-val">${countPlayerLines(pid)} ライン 🏆</span></div><div class="recap-row"><span>${l.name}</span><span class="recap-val">${countPlayerLines((pid+1)%2)} ライン</span></div>`}
   showScreen('winnerScreen');
 }
 
@@ -1016,31 +919,26 @@ function renderMap(){
   const found=board.cells.filter(c=>c.found&&!c.isFree&&c.photo);
   const g=document.getElementById('mapGrid');
   if(!found.length){g.innerHTML='<div class="map-empty">📸 まだ写真がありません<br>マスを埋めると地図に追加されます！</div>';return}
-  g.innerHTML=found.map(cell=>`
-    <div class="map-card ${cell.loc?'has-loc':''}">
-      <img src="${cell.photo}" alt="${cell.keyword}">
-      <div class="mc-body">
-        <div class="mc-kw">${cell.keyword}</div>
-        ${cell.loc?`<div class="mc-loc">📍 ${cell.loc.label}</div>`:'<div class="mc-loc" style="color:#ccc">📍 位置情報なし</div>'}
-        ${cell.comment?`<div class="mc-comment">💬 ${cell.comment}</div>`:''}
-      </div>
-    </div>`).join('');
+  g.innerHTML=found.map(cell=>`<div class="map-card${cell.loc?' has-loc':''}">
+    <img src="${cell.photo}" alt="${cell.keyword}">
+    <div class="mc-body">
+      <div class="mc-kw">${cell.keyword}</div>
+      <div class="mc-loc">${cell.loc?`📍 ${cell.loc.label}`:'📍 位置情報なし'}</div>
+      ${cell.comment?`<div class="mc-comment">💬 ${cell.comment}</div>`:''}
+    </div>
+  </div>`).join('');
 }
 
 /* ── UTILS ── */
 function dismissFlash(){document.getElementById('bingoFlash').classList.remove('show')}
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(id==='mapScreen') renderMap();
-}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='mapScreen')renderMap()}
 function showSetup(){clearInterval(timerInterval);showScreen('setupScreen');board={cells:[],lines:0};players=[]}
 function resetBoard(){
   if(!board.cells.length)return;
   clearInterval(timerInterval);
   board.cells.forEach(c=>{if(!c.isFree){c.found=false;c.photo=null;c.owner=null;c.loc=null;c.comment=''}});
   board.lines=0;players.forEach(p=>{p.lines=0;p.found=0});currentPlayer=0;
-  if(useTimer) startTimer();
+  if(useTimer)startTimer();
   if(gameMode==='battle'){document.getElementById('nextPlayerName').textContent=players[0]?.name||'P1';document.getElementById('passOverlay').classList.add('open')}
   renderGameUI();
 }
