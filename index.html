@@ -204,6 +204,9 @@ input:checked+.toggle-sl:before{transform:translateX(20px)}
 .mc-kw{font-weight:700;font-size:.82rem;color:var(--stone);margin-bottom:3px}
 .mc-loc{font-size:.64rem;color:var(--khaki-d);font-weight:600;display:flex;align-items:center;gap:3px}
 .mc-comment{font-size:.67rem;color:var(--stone-l);margin-top:4px;font-weight:500}
+.mc-open-map{display:inline-flex;align-items:center;gap:4px;margin-top:7px;padding:5px 11px;background:var(--khaki-l);border:1.5px solid var(--khaki);border-radius:20px;font-size:.68rem;font-weight:700;color:var(--khaki-d);cursor:pointer;text-decoration:none;transition:all .2s}
+.mc-open-map:hover{background:var(--khaki);color:white}
+.mc-no-loc{display:inline-flex;align-items:center;gap:4px;margin-top:7px;font-size:.65rem;color:var(--beige-dd);font-weight:600}
 .map-empty{text-align:center;padding:40px 20px;color:var(--beige-dd);font-size:.82rem;font-weight:600;line-height:1.8}
 
 /* ── OVERLAYS ── */
@@ -904,17 +907,135 @@ function removeCell(){
 
 /* ── WIN ── */
 function checkWinImmediate(){
-  if(gameMode==='battle')return players.some((_,i)=>countPlayerLines(i)>=1);
+  if(gameMode==='battle')return players.some((_,i)=>countPlayerLines(i)>=3);
   return board.cells.filter(c=>!c.isFree).every(c=>c.found);
 }
 function checkWin(){
   if(gameMode==='solo'){if(board.cells.filter(c=>!c.isFree).every(c=>c.found))showWinner('solo')}
   else if(gameMode==='coop'){if(countLines()>=4||board.cells.filter(c=>!c.isFree).every(c=>c.found))showWinner('coop')}
-  else{const w=players.findIndex((_,i)=>countPlayerLines(i)>=1);if(w>=0)showWinner('battle',w)}
+  else{const w=players.findIndex((_,i)=>countPlayerLines(i)>=3);if(w>=0)showWinner('battle',w)}
 }
+
+/* ── WINNER DOMINO ANIMATION ── */
+function showWinnerDomino(playerName, lines, mode){
+  const photos = board.cells.filter(c => c.found && !c.isFree && c.photo);
+  const overlay = document.getElementById('winnerOverlay');
+  const stage = document.getElementById('dominoStage');
+  stage.innerHTML = '';
+  overlay.classList.add('show');
+
+  // Layout: spiral/scattered positions
+  const positions = [
+    {x:0,y:0,rot:-8,w:54,h:54},
+    {x:-30,y:-28,rot:6,w:48,h:48},
+    {x:28,y:-32,rot:-12,w:46,h:46},
+    {x:-38,y:20,rot:10,w:50,h:50},
+    {x:34,y:18,rot:-6,w:52,h:52},
+    {x:-10,y:34,rot:14,w:44,h:44},
+    {x:16,y:-50,rot:-4,w:42,h:42},
+    {x:-50,y:-10,rot:8,w:40,h:40},
+    {x:48,y:-16,rot:-16,w:38,h:38},
+    {x:-24,y:46,rot:4,w:36,h:36},
+    {x:36,y:40,rot:-10,w:34,h:34},
+    {x:8,y:52,rot:12,w:32,h:32},
+    {x:-56,y:28,rot:-6,w:30,h:30},
+    {x:54,y:8,rot:8,w:28,h:28},
+    {x:-8,y:-56,rot:-14,w:26,h:26},
+  ];
+
+  const vw = Math.min(window.innerWidth, 500);
+  const vh = window.innerHeight;
+  const cx = vw / 2;
+  const cy = vh / 2 - 60;
+  const scale = Math.min(vw, vh) / 360;
+
+  photos.forEach((cell, idx) => {
+    const pos = positions[idx % positions.length];
+    const img = document.createElement('img');
+    img.className = 'domino-photo';
+    img.src = cell.photo;
+    const sz = Math.round((pos.w + (idx === 0 ? 60 : 0)) * scale);
+    img.style.cssText = `
+      width:${sz}px; height:${sz}px;
+      left:${cx + pos.x * scale - sz/2}px;
+      top:${cy + pos.y * scale - sz/2}px;
+      --rot:${pos.rot}deg;
+      z-index:${idx+1};
+      animation-delay:${idx * 0.18}s;
+    `;
+    stage.appendChild(img);
+
+    setTimeout(() => {
+      img.classList.add('visible');
+    }, idx * 180);
+  });
+
+  // Show text after photos
+  const delay = photos.length * 180 + 400;
+  setTimeout(() => {
+    document.getElementById('wtName').textContent = `🏆 ${playerName}`;
+    document.getElementById('wtName').classList.add('show');
+  }, delay);
+  setTimeout(() => {
+    document.getElementById('wtSub').textContent = 'WINNER!!';
+    document.getElementById('wtSub').classList.add('show');
+  }, delay + 200);
+  setTimeout(() => {
+    const lbl = mode === 'battle' ? `🎯 ${lines} ライン先取！` :
+                mode === 'coop'   ? `🤝 ${lines} ライン達成！` :
+                                    `🎯 ${lines} ライン完成！`;
+    document.getElementById('wtLines').textContent = lbl;
+    document.getElementById('wtLines').classList.add('show');
+    spawnConfetti();
+  }, delay + 400);
+
+  if(!photos.length){
+    // No photos - just show text
+    document.getElementById('wtName').textContent = `🏆 ${playerName}`;
+    ['wtName','wtSub','wtLines'].forEach(id => {
+      setTimeout(() => document.getElementById(id).classList.add('show'), 200);
+    });
+    document.getElementById('wtSub').textContent = 'WINNER!!';
+    document.getElementById('wtLines').textContent = `🎯 ${lines} ライン！`;
+    spawnConfetti();
+  }
+}
+
+function spawnConfetti(){
+  const colors = ['#C4714A','#7A8C5E','#E8C990','#F0D5C4','#D4DEC4','#fff'];
+  const stage = document.getElementById('dominoStage');
+  for(let i = 0; i < 40; i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*30}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${1.5 + Math.random()*2}s;
+      animation-delay:${Math.random()*0.8}s;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    stage.appendChild(p);
+  }
+}
+
+function closeWinnerOverlay(){
+  const overlay = document.getElementById('winnerOverlay');
+  overlay.classList.remove('show');
+  document.getElementById('dominoStage').innerHTML = '';
+  ['wtName','wtSub','wtLines'].forEach(id => document.getElementById(id).classList.remove('show'));
+  showScreen('winnerScreen');
+}
+
 function showWinner(mode,pid=0){
   clearInterval(timerInterval);
   const found=board.cells.filter(c=>c.found&&!c.isFree).length;
+  // Trigger domino animation
+  const winName = mode==='coop' ? players.map(p=>p.name).join(' & ') :
+                  mode==='timeup' ? (gameMode==='battle' ? players.reduce((a,_,i)=>countPlayerLines(i)>countPlayerLines(players.indexOf(a))?players[i]:a,players[0]).name : players[0].name) :
+                  mode==='solo' ? players[0].name : players[pid].name;
+  const winLines = mode==='battle' ? countPlayerLines(pid) : mode==='solo' ? board.lines : countLines();
+  showWinnerDomino(winName, winLines, mode);
   if(mode==='solo'){document.getElementById('winnerName').textContent=players[0].name;document.getElementById('winnerSub').textContent='が全マスコンプリート！';document.getElementById('winBadge').textContent=`🎯 ${board.lines} ライン完成！`;document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>埋めたマス</span><span class="recap-val">${found}/15</span></div><div class="recap-row"><span>ライン数</span><span class="recap-val">${board.lines} ライン</span></div>`}
   else if(mode==='coop'){document.getElementById('winnerName').textContent=players.map(p=>p.name).join(' & ');document.getElementById('winnerSub').textContent='チームでビンゴ達成！🤝';document.getElementById('winBadge').textContent=`🎯 ${countLines()} ライン完成！`;document.getElementById('winRecap').innerHTML=`<div class="recap-row"><span>合計マス</span><span class="recap-val">${found}/15</span></div><div class="recap-row"><span>ライン数</span><span class="recap-val">${countLines()} ライン</span></div>`}
   else if(mode==='timeup'){document.getElementById('winnerName').textContent=gameMode==='battle'?players.reduce((a,_,i)=>countPlayerLines(i)>countPlayerLines(players.indexOf(a))?players[i]:a,players[0]).name:players[0].name;document.getElementById('winnerSub').textContent='タイムアップ！最多ライン！';document.getElementById('winBadge').textContent='⏱️ タイムアタック終了！';document.getElementById('winRecap').innerHTML=players.map((p,i)=>`<div class="recap-row"><span>${p.name}</span><span class="recap-val">${gameMode==='battle'?countPlayerLines(i):countLines()} ライン</span></div>`).join('')}
@@ -931,8 +1052,10 @@ function renderMap(){
     <img src="${cell.photo}" alt="${cell.keyword}">
     <div class="mc-body">
       <div class="mc-kw">${cell.keyword}</div>
-      <div class="mc-loc">${cell.loc?`📍 ${cell.loc.label}`:'📍 位置情報なし'}</div>
       ${cell.comment?`<div class="mc-comment">💬 ${cell.comment}</div>`:''}
+      ${cell.loc
+        ?`<a class="mc-open-map" href="https://www.google.com/maps?q=${cell.loc.lat},${cell.loc.lng}" target="_blank" rel="noopener">🗺️ Googleマップで開く</a>`
+        :`<span class="mc-no-loc">📍 位置情報なし</span>`}
     </div>
   </div>`).join('');
 }
